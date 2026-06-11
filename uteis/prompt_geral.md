@@ -5,6 +5,7 @@ O **Prompt Mestre  VERSÃO 1.1** é uma evolução do modelo original, integrand
 ### Principais características:
 
 - **Técnica de Feynman**: Explicações simplificadas sem perder a profundidade técnica.  
+- **Teoria**: Abordar conceitos fundamentais com narrativa literária e clara, garantindo compreensão total.
 - **Projeto Prático Incremental**: Um único projeto desenvolvido ao longo de todas as aulas.  
 - **Códigos Funcionais**: Cada aula inclui código comentado linha a linha e entregáveis testáveis.  
 - **Analogias do Cotidiano**: Facilitam a compreensão de conceitos técnicos.  
@@ -504,6 +505,8 @@ Dúvidas? Posso prosseguir para a próxima etapa?
 - **Ferramentas de teste**
 
 ---
+
+Importante: Gerar um arquivo `prompts_individuais.md` com prompts específicos para cada aula, seguindo a estrutura definida, para facilitar a geração das aulas futuras.
 
 ## 19. SEÇÃO 18: COMANDO DE INICIALIZAÇÃO
 
