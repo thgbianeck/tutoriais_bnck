@@ -1,485 +1,336 @@
-# Aula 01 — Introdução ao SQL Server 2017: Arquitetura, Instâncias e o Ambiente Profissional
+# Aula 1 — O que é um Banco de Dados Relacional e por que o SQL Server?
 
-## Análise de Integridade (Auditoria Prévia)
-✅ Conteúdo verificado antes da geração: profundidade técnica mantida, linguagem acessível para iniciante em SQL Server, analogias do cotidiano presentes, código funcional e testável, glossário completo, antecipação de erros presente, mínimo de 2.000 palavras garantido, diagrama Mermaid incluído, blocos internos escapados com ~~~.
-
----
-
-## Objetivo Específico
-Ao final desta aula, você será capaz de compreender a arquitetura interna do SQL Server 2017, entender o conceito de instâncias, configurar o ambiente completo de desenvolvimento no Windows 11 com SSMS 21 e VS Code, e executar seu primeiro script T-SQL de validação do ambiente — o ponto de partida funcional do projeto FinanceCore DB.
-
-## Pré-requisitos
-Nenhum. Esta é a aula zero do conhecimento. Tudo será explicado do início, com analogias, teoria e prática. Você precisa apenas ter o SQL Server 2017 instalado na máquina. Caso ainda não tenha, o primeiro bloco desta aula cobre a instalação passo a passo.
+**Curso:** SQL Server para Aplicações Financeiras com T-SQL
+**Projeto:** FinanceDB — Sistema de Controle Financeiro Pessoal
+**Módulo:** 1 — Essencial: Fundamentos
+**Ambiente:** Windows 11 · VS Code (editor) · SSMS 21 (execução) · SQL Server 2022
 
 ---
 
-## Teoria Detalhada — Narrativa Densa
+## Técnica de Feynman
 
-### O que é o SQL Server e por que ele existe?
-
-Imagine que você administra um banco financeiro físico — daqueles com cofres, funcionários, guichês e enormes livros contábeis. Cada vez que um cliente realiza uma operação, alguém precisa abrir o livro certo, encontrar a página certa, registrar a operação com precisão absoluta, garantir que ninguém mais mexa naquele registro ao mesmo tempo e, ao final, fechar o livro com segurança. Agora imagine que esse banco atende dez mil clientes simultaneamente, vinte e quatro horas por dia, sete dias por semana, e que qualquer erro de centavo pode gerar um processo judicial. Você precisaria de um sistema absolutamente confiável para gerenciar tudo isso.
-
-O SQL Server é exatamente esse sistema — mas para dados digitais. Ele é um SGBD, um Sistema Gerenciador de Banco de Dados Relacional, desenvolvido pela Microsoft. Sua função é receber, armazenar, organizar, proteger e entregar dados com precisão cirúrgica, mesmo quando milhares de usuários ou sistemas tentam acessá-los ao mesmo tempo. Para aplicações financeiras, essa confiabilidade não é um diferencial — é um requisito absoluto.
-
-O SQL Server 2017 foi lançado em outubro de 2017 e trouxe uma série de avanços importantes: suporte nativo a Linux e Docker (inédito para o produto), integração com Python para análise de dados, melhorias no In-Memory OLTP, aprimoramentos no Query Store e no otimizador de consultas. É uma versão madura, amplamente adotada em ambientes corporativos financeiros, e será nossa base de trabalho ao longo de todo o curso.
+Imagine que você precisa explicar para um amigo que nunca ouviu falar em banco de dados o que você faz quando organiza suas finanças pessoais. Você provavelmente tem uma planilha, ou um caderno, onde anota suas receitas e despesas. Cada linha é um lançamento. Cada coluna é uma informação: data, descrição, valor, categoria. Isso, na essência, é um banco de dados. Um banco de dados relacional nada mais é do que um conjunto de planilhas organizadas com regras rígidas, onde as informações se relacionam entre si de forma controlada e confiável. O SQL Server é o sistema que gerencia tudo isso para você, e o T-SQL é a linguagem que você usa para conversar com ele.
 
 ---
 
-### Analogia de Ancoragem — A Arquitetura como um Restaurante de Alta Gastronomia
+## Teoria
 
-Antes de mergulhar na arquitetura técnica, quero que você visualize o SQL Server como um restaurante de alta gastronomia. Esse restaurante tem várias áreas com funções distintas, e cada uma delas colabora para que o prato chegue perfeito à mesa do cliente. Vamos mapear cada área para um componente real do SQL Server.
+### O problema que os bancos de dados resolvem
 
-O salão de entrada, onde os clientes chegam e fazem seus pedidos, é o equivalente ao Protocolo de Rede — o TDS (Tabular Data Stream). É por ali que as requisições chegam ao servidor, seja via aplicação, seja via SSMS, seja via VS Code. Cada pedido (query) precisa ser recebido, entendido e encaminhado para a cozinha correta.
+Antes de existirem bancos de dados, as empresas guardavam suas informações em arquivos físicos, fichas e cadernos. Uma instituição financeira dos anos 1970 podia ter galpões inteiros repletos de papéis. Encontrar o extrato de um cliente específico exigia horas de trabalho manual. O risco de perda, duplicação ou inconsistência era altíssimo.
 
-A cozinha principal, onde o chef interpreta o pedido e decide como prepará-lo, é o Query Processor — o coração intelectual do SQL Server. Ele é composto por três sub-áreas: o Parser (que verifica se a query está gramaticalmente correta, como um sous-chef lendo a comanda), o Algebrizer (que verifica se os objetos referenciados existem — tabelas, colunas, procedures — como o chef confirmando que os ingredientes estão disponíveis), e o Optimizer (que decide o melhor jeito de executar a query, como o chef escolhendo a técnica de preparo mais eficiente para aquele prato naquele momento).
+Com a informatização, o primeiro impulso foi simplesmente digitalizar esses arquivos: guardar dados em arquivos de texto, planilhas ou arquivos proprietários de cada programa. Isso resolveu parte do problema, mas criou outros. Se dois programas diferentes precisassem acessar os mesmos dados simultaneamente, havia conflito. Se o arquivo corrompesse, os dados se perdiam. Se a estrutura precisasse mudar, todos os programas que liam aquele arquivo precisavam ser reescritos.
 
-A despensa e o refrigerador do restaurante representam o Storage Engine — o componente responsável por ler e gravar os dados nos arquivos físicos do disco. Ele sabe exatamente onde cada ingrediente (dado) está guardado, como buscá-lo com eficiência e como devolvê-lo ao lugar correto após o uso.
+Foi para resolver esses problemas que os **Sistemas Gerenciadores de Banco de Dados** (SGBDs) foram criados. Eles centralizam o armazenamento, o acesso e a proteção dos dados, oferecendo uma camada de abstração entre os programas e os dados em si.
 
-A bancada de trabalho quente, onde pratos já semi-prontos ficam aguardando montagem final, é o Buffer Pool — a memória RAM gerenciada pelo SQL Server. É aqui que os dados mais acessados ficam "em mãos", evitando que o SQL Server precise ir ao disco (a despensa fria) a cada requisição. Em sistemas financeiros com alto volume de consultas repetidas, o Buffer Pool bem dimensionado é a diferença entre uma aplicação rápida e uma lenta.
+### O que é um banco de dados relacional
 
-O livro de registros do restaurante, onde cada pedido e cada transação financeira da casa é anotado com carimbo de hora, é o Transaction Log — o arquivo de log de transações. Tudo o que acontece no banco de dados é registrado aqui antes de ser escrito nos arquivos de dados. É a espinha dorsal da recuperação de desastres e da integridade financeira.
+O modelo relacional foi proposto pelo matemático britânico **Edgar F. Codd** em 1970, em um artigo que se tornou um dos mais influentes da história da computação. A ideia central é simples e poderosa: organizar dados em **tabelas** (chamadas de relações na teoria formal), onde cada tabela representa um tipo de entidade do mundo real.
 
----
+Uma **tabela** é composta por **colunas** (também chamadas de atributos ou campos), que definem quais informações serão armazenadas, e por **linhas** (também chamadas de registros ou tuplas), que representam cada ocorrência individual daquela entidade.
 
-### Arquitetura Detalhada do SQL Server 2017
+No contexto do nosso projeto **FinanceDB**, uma tabela chamada `Categorias` teria colunas como `CategoriaId`, `Nome` e `Tipo`. Cada linha seria uma categoria específica: Salário, Alimentação, Transporte, e assim por diante.
 
-Agora que temos a analogia como mapa mental, vamos detalhar cada componente com precisão técnica.
+A palavra **relacional** não vem apenas do fato de os dados estarem em tabelas, mas principalmente do fato de que as tabelas podem se **relacionar entre si**. Uma tabela de `Lancamentos` pode referenciar uma tabela de `Categorias`, indicando a qual categoria cada lançamento pertence. Essa capacidade de relacionamento é o que torna o modelo tão poderoso para aplicações complexas como sistemas financeiros.
 
-**O Protocolo de Rede e o TDS**
+### Três conceitos fundamentais que você precisa separar
 
-O SQL Server se comunica com o mundo externo através do protocolo TDS (Tabular Data Stream), um protocolo proprietário da Microsoft que define como os dados são formatados e transmitidos entre o cliente (sua aplicação, SSMS ou VS Code) e o servidor. Por padrão, o SQL Server escuta na porta TCP 1433. O SQL Server Configuration Manager (uma ferramenta que instalaremos juntos) permite gerenciar quais protocolos estão habilitados: TCP/IP, Named Pipes e Shared Memory.
+Existe uma confusão muito comum entre iniciantes que vale a pena esclarecer desde o início, porque ela vai aparecer em toda a sua jornada:
 
-**O Query Processor em Profundidade**
+**Banco de Dados** é o conjunto de dados armazenados, organizados em tabelas, com seus relacionamentos, restrições e regras. É o "conteúdo". No nosso curso, o `FinanceDB` é o banco de dados — ele conterá todas as tabelas, dados e objetos do nosso sistema financeiro.
 
-Quando você escreve uma query e pressiona F5 no SSMS, ela passa por quatro etapas dentro do Query Processor antes de qualquer dado ser lido ou gravado. Primeiro, o Parser verifica a sintaxe: cada palavra-chave, parêntese e vírgula é validado. Se você escreveu SELCT em vez de SELECT, o Parser rejeita imediatamente com uma mensagem de erro. Segundo, o Algebrizer (também chamado de Binder) verifica a semântica: a tabela que você referenciou existe? A coluna que você pediu pertence a essa tabela? O usuário tem permissão? Terceiro, o Optimizer entra em cena — e é aqui que a mágica acontece. Ele analisa centenas ou até milhares de planos de execução possíveis para a sua query e escolhe o que ele estima como o mais eficiente, com base em estatísticas de distribuição dos dados. Quarto e último, o Executor pega o plano escolhido e o executa de fato, coordenando com o Storage Engine para buscar os dados.
+**SGBD (Sistema Gerenciador de Banco de Dados)** é o software responsável por criar, gerenciar, proteger e fornecer acesso aos bancos de dados. Ele é o "motor". O **SQL Server 2022** é o SGBD que usaremos. Ele roda como um serviço no Windows, aceita conexões, processa comandos e garante que os dados sejam armazenados e recuperados de forma correta e segura.
 
-**O Storage Engine e os Arquivos Físicos**
+**SQL (Structured Query Language)** é a linguagem padronizada usada para se comunicar com o SGBD. É o "idioma". Você escreve comandos em SQL para criar tabelas, inserir dados, fazer consultas e muito mais. O **T-SQL (Transact-SQL)** é a variante do SQL usada especificamente pelo SQL Server, com extensões proprietárias da Microsoft que adicionam recursos procedurais, tratamento de erros e muito mais.
 
-O Storage Engine gerencia a leitura e gravação de dados nos arquivos físicos do sistema operacional. O SQL Server trabalha com três tipos de arquivos: o arquivo de dados primário (.mdf), que é o arquivo principal do banco; arquivos de dados secundários (.ndf), opcionais, usados quando queremos separar dados em múltiplos discos ou grupos de arquivos; e o arquivo de log de transações (.ldf), onde cada modificação é registrada de forma durável antes de ser aplicada nos arquivos de dados.
+A relação entre os três é assim: você escreve **T-SQL** para se comunicar com o **SQL Server** (SGBD), que por sua vez gerencia o **FinanceDB** (banco de dados).
 
-O Storage Engine não lê dados byte a byte do disco. Ele trabalha com páginas de 8 KB — a unidade mínima de I/O do SQL Server. Cada página armazena linhas de uma tabela (ou partes de índices). Oito páginas formam uma extensão (64 KB), que é a unidade de alocação de espaço. Compreender essa granularidade é fundamental para entender performance, fragmentação de índices e estratégias de armazenamento financeiro.
+### Por que o SQL Server para aplicações financeiras
 
-**O Buffer Pool — A Memória é Rei**
+Existem vários SGBDs no mercado: PostgreSQL, MySQL, Oracle, SQLite, entre outros. Cada um tem seus pontos fortes. O SQL Server, desenvolvido pela Microsoft, é particularmente bem posicionado para aplicações financeiras por algumas razões que vão além do marketing.
 
-O Buffer Pool é o cache de dados do SQL Server. Quando o Storage Engine precisa de uma página de dados, ele primeiro verifica se ela já está no Buffer Pool (em RAM). Se estiver — um acesso chamado de logical read — a operação é extremamente rápida. Se não estiver — um acesso chamado de physical read — o SQL Server precisa ir ao disco, que é ordens de magnitude mais lento. Em sistemas financeiros de alto volume, a regra de ouro é simples: quanto mais dados couberem no Buffer Pool, menor a pressão sobre o disco e maior a performance das consultas.
+A primeira razão é a **confiabilidade transacional**. O SQL Server implementa com rigor as propriedades ACID (Atomicidade, Consistência, Isolamento e Durabilidade), que são o alicerce da integridade em sistemas financeiros. Você aprenderá sobre isso em detalhes na Aula 20, mas desde já entenda que "ACID" significa que o banco garante que uma transferência entre contas ou acontece completamente ou não acontece de forma alguma — nunca pela metade.
 
-**O Transaction Log — O Diário Imutável do Banco**
+A segunda razão é a **precisão numérica**. O SQL Server oferece tipos de dados como `DECIMAL` e `NUMERIC` com controle preciso de casas decimais, essencial para evitar erros de arredondamento em cálculos financeiros. Um centavo a mais ou a menos em escala pode representar milhões.
 
-O arquivo de log de transações é o mecanismo que garante a durabilidade das operações — o "D" do acrônimo ACID, que estudaremos em profundidade na Aula 15. Toda modificação de dados segue este protocolo: primeiro o SQL Server grava a operação no log (write-ahead logging), depois aplica a mudança nas páginas do Buffer Pool, e só então, em um momento assíncrono chamado checkpoint, escreve as páginas modificadas no arquivo de dados em disco. Isso garante que, mesmo que o servidor caia no pior momento possível, o Transaction Log permite recuperar o banco ao estado exato antes da falha — ou até a um ponto específico no tempo, o que é essencial para auditoria financeira.
+A terceira razão é a **integração com o ecossistema Microsoft**. Em ambientes corporativos financeiros, SQL Server, Windows Server, Active Directory e ferramentas como Power BI e Excel trabalham de forma integrada e bem documentada.
 
----
+A quarta razão é a **adoção no mercado**. O SQL Server é amplamente usado em bancos, corretoras, fintechs e empresas de contabilidade no Brasil e no mundo. Dominar T-SQL abre portas concretas no mercado de trabalho financeiro.
 
-### Instâncias do SQL Server — Uma Máquina, Vários Bancos
+### O SQL Server 2022 em particular
 
-**Analogia de Ancoragem — Instâncias como Apartamentos no Mesmo Prédio**
+A versão 2022 do SQL Server é a mais recente ao início deste curso e traz recursos relevantes como integração nativa com o Azure (nuvem da Microsoft), melhorias de desempenho no Query Optimizer e suporte aprimorado a linguagens como Python e R para análise de dados dentro do próprio banco. Para o nosso curso, o que importa é que todos os comandos T-SQL que você aprenderá são compatíveis com o SQL Server 2022 e, em sua maioria, com versões anteriores como 2019 e 2017.
 
-Imagine um prédio residencial. O endereço do prédio é fixo (o servidor Windows 11), mas dentro dele podem existir múltiplos apartamentos completamente independentes — cada um com sua própria fechadura, seus próprios móveis e seus próprios moradores. Uma instância do SQL Server é exatamente isso: um ambiente SQL Server completo e isolado, rodando dentro do mesmo servidor físico, com seu próprio conjunto de bancos de dados, sua própria configuração de memória, seus próprios logins e suas próprias portas de rede.
+### O SSMS 21 — sua bancada de trabalho
 
-**Instância Padrão vs. Instâncias Nomeadas**
+O **SQL Server Management Studio (SSMS)** é a ferramenta oficial da Microsoft para administrar e interagir com o SQL Server. Pense nele como o painel de controle da sua bancada de trabalho — é onde você se conecta ao banco, executa scripts T-SQL, visualiza resultados e navega pelos objetos do banco de dados.
 
-O SQL Server suporta dois tipos de instâncias. A instância padrão (default instance) ocupa o "apartamento térreo" do prédio: ela escuta na porta padrão 1433 e é referenciada simplesmente pelo nome do servidor — por exemplo, MEUSERVIDOR ou localhost. Só pode existir uma instância padrão por servidor.
+A versão 21 é a mais recente e traz melhorias de interface e desempenho em relação às versões anteriores. Para instalar o SSMS 21, acesse o link oficial:
 
-As instâncias nomeadas são os demais apartamentos: elas recebem um nome durante a instalação — por exemplo, MEUSERVIDOR\FINANCEIRO ou MEUSERVIDOR\DESENVOLVIMENTO — e escuta em uma porta dinâmica ou configurada manualmente. Em ambientes corporativos financeiros, é comum ter uma instância de produção, uma de homologação e uma de desenvolvimento no mesmo servidor físico ou virtual, cada uma completamente isolada das outras.
-
-Para o nosso curso, trabalharemos com a instância padrão do SQL Server 2017 instalada no seu Windows 11. A string de conexão que usaremos em todo o curso será simplesmente localhost ou (local) ou o nome da sua máquina.
-
----
-
-### O Ambiente Profissional — SSMS 21 e VS Code
-
-**SQL Server Management Studio 21 (SSMS 21)**
-
-O SSMS é a ferramenta gráfica oficial da Microsoft para administração e desenvolvimento em SQL Server. A versão 21 é a mais recente e traz melhorias significativas de interface, suporte a temas escuros e integração com o Azure. Para o nosso curso, o SSMS será nossa ferramenta principal de execução de queries, visualização de planos de execução, administração de objetos e monitoramento do servidor.
-
-As principais áreas do SSMS que usaremos são: o Object Explorer (painel lateral esquerdo onde você navega pelos bancos, tabelas, procedures e todos os objetos do servidor), o Query Editor (onde você escreve e executa T-SQL), a aba Results (que mostra os resultados das queries em formato de grade), a aba Messages (que mostra mensagens de erro, avisos e o número de linhas afetadas), e a opção de visualização de planos de execução (Estimated Execution Plan com Ctrl+L e Actual Execution Plan com Ctrl+M).
-
-**VS Code com a Extensão mssql**
-
-O VS Code será nossa ferramenta de versionamento e edição de scripts .sql. A extensão mssql (publicada pela Microsoft) transforma o VS Code em um cliente SQL completo, com IntelliSense para T-SQL, execução de queries, visualização de resultados e conexão a instâncias do SQL Server. A vantagem de usar o VS Code para escrever os scripts é a integração nativa com Git — todos os nossos scripts do FinanceCore DB serão versionados e organizados no repositório.
-
----
-
-### Instalação e Configuração do Ambiente (Windows 11)
-
-**Passo 1 — Verificar se o SQL Server 2017 está instalado**
-
-Abra o SQL Server Configuration Manager (procure no menu Iniciar por "SQL Server Configuration Manager"). Se você ver "SQL Server (MSSQLSERVER)" ou "SQL Server (nome_da_instância)" com status "Running", o SQL Server já está instalado e rodando. Se não estiver instalado, acesse https://www.microsoft.com/pt-br/sql-server/sql-server-downloads e baixe o SQL Server 2017 Developer Edition (gratuito para desenvolvimento).
-
-**Passo 2 — Verificar e habilitar o protocolo TCP/IP**
-
-No SQL Server Configuration Manager, expanda "SQL Server Network Configuration" → "Protocols for MSSQLSERVER". Verifique se "TCP/IP" está habilitado. Se não estiver, clique com o botão direito → Enable. Reinicie o serviço do SQL Server após a mudança.
-
-**Passo 3 — Instalar o SSMS 21**
-
-Acesse https://aka.ms/ssmsfullsetup e baixe o instalador do SSMS 21. Execute o instalador e siga o processo padrão. Após a instalação, abra o SSMS e conecte-se ao servidor usando "localhost" como nome do servidor e "Windows Authentication" como método de autenticação.
-
-**Passo 4 — Instalar o VS Code e a extensão mssql**
-
-Se ainda não tiver o VS Code, baixe em https://code.visualstudio.com. Após a instalação, abra o VS Code, acesse a aba de extensões (Ctrl+Shift+X), pesquise por "mssql" e instale a extensão "SQL Server (mssql)" publicada pela Microsoft. Configure uma conexão clicando no ícone do banco de dados na barra lateral e adicionando uma nova conexão para "localhost" com autenticação Windows.
-
-**Passo 5 — Criar a estrutura de pastas do projeto**
-
-Abra o terminal do Windows (PowerShell ou Prompt de Comando) e execute os comandos abaixo para criar a estrutura inicial do repositório FinanceCore DB:
-
-~~~powershell
-# Criar a pasta raiz do projeto
-mkdir C:\Projetos\financecore-db
-
-# Navegar para a pasta
-cd C:\Projetos\financecore-db
-
-# Criar a estrutura de módulos
-mkdir modulo_01_essencial\aula_01\codigo
-mkdir modulo_01_essencial\aula_01\exercicios
-mkdir modulo_01_essencial\aula_01\respostas
-mkdir financecore_completo
-
-# Inicializar o repositório Git
-git init
-
-# Criar o arquivo .gitignore
-echo "*.bak" > .gitignore
-echo "*.ldf" >> .gitignore
-echo "*.mdf" >> .gitignore
+~~~text
+https://aka.ms/ssmsfullsetup
 ~~~
 
+Após instalar e abrir o SSMS 21, você verá a tela de conexão. No campo **Server name**, você digitará o nome da sua instância do SQL Server. Na maioria das instalações locais no Windows, o valor padrão é simplesmente um ponto (`.`) ou `localhost` ou `.\SQLEXPRESS` se você instalou o SQL Server Express. No campo **Authentication**, selecione **Windows Authentication** para usar as credenciais do seu usuário Windows — o modo mais simples para começar.
+
+Após conectar, você verá o **Object Explorer** à esquerda — uma árvore hierárquica que mostra todos os bancos de dados, tabelas, views, procedures e outros objetos gerenciados pelo seu SQL Server. Ao longo do curso, você usará muito o Object Explorer para verificar se os objetos que criou realmente existem.
+
+A área central do SSMS é o **Editor de Queries** — onde você escreve e executa seus scripts T-SQL. Para abrir um novo editor, use o botão **New Query** na barra de ferramentas ou o atalho `Ctrl + N`. Após escrever seu script, execute com `F5` ou o botão **Execute**. Os resultados aparecem na aba **Results** logo abaixo. Mensagens de sucesso ou erro aparecem na aba **Messages**.
+
+### O VS Code — sua prancheta de projeto
+
+O **Visual Studio Code** será o seu editor principal para escrever, organizar e versionar todos os arquivos do projeto `FinanceDB`. Enquanto o SSMS é especializado em executar SQL, o VS Code é um editor de código de propósito geral, leve, extensível e com excelente suporte a Git.
+
+No contexto deste curso, o VS Code será usado para escrever os scripts `.sql` de cada aula, editar os arquivos `.md` de documentação (como este plano mestre e os READMEs de cada aula), e organizar toda a estrutura de pastas do projeto. Quando um script estiver pronto, você o abre no SSMS para executar, ou simplesmente copia e cola no editor de queries.
+
+### Configurando o VS Code para o projeto
+
+Abra o VS Code. Vá em **File → Open Folder** e crie ou selecione a pasta `FinanceDB` em um local de sua preferência no Windows 11 — por exemplo, `C:\Projetos\FinanceDB`. Esta pasta será a raiz do seu projeto durante todo o curso.
+
+Com a pasta aberta no VS Code, instale as extensões recomendadas. Para instalar uma extensão, use o atalho `Ctrl + Shift + X` para abrir o painel de extensões e pesquise pelo nome. As extensões recomendadas são **SQL Server (mssql)** da Microsoft para realce de sintaxe T-SQL, **Markdown All in One** para trabalhar confortavelmente com arquivos `.md`, **GitLens** para versionamento Git visual e **Material Icon Theme** para identificar os tipos de arquivo pelas suas pastas com ícones visuais.
+
+Após instalar as extensões, crie a estrutura inicial de pastas do projeto. No painel **Explorer** do VS Code (ícone de arquivos à esquerda), crie as seguintes pastas e arquivos clicando com o botão direito na área de arquivos:
+
+~~~text
+FinanceDB/
+├── README.md
+├── plano_mestre.txt
+├── log_estado_projeto.md
+├── prompts_individuais.md
+├── .gitignore
+├── aula_01/
+│   ├── README.md
+│   └── exercicios/
+│       └── exercicio_01.md
+~~~
+
+No arquivo `README.md` da raiz, escreva uma descrição simples do projeto:
+
+~~~text
+# FinanceDB — Sistema de Controle Financeiro Pessoal
+
+Projeto prático do curso "SQL Server para Aplicações Financeiras com T-SQL".
+Construído aula a aula, do zero ao domínio completo.
+
+## Tecnologias
+- SQL Server 2022
+- T-SQL
+- SSMS 21
+- VS Code
+
+## Estrutura
+Cada pasta aula_XX contém o README da aula, os scripts SQL e os exercícios.
+~~~
+
+No arquivo `.gitignore`, adicione as seguintes entradas para ignorar arquivos temporários do Windows e do VS Code:
+
+~~~text
+.vs/
+*.suo
+*.user
+Thumbs.db
+desktop.ini
+.vscode/settings.json
+~~~
+
+### O fluxo de trabalho entre VS Code e SSMS
+
+O fluxo que você usará em cada aula é sempre o mesmo, e é importante internalizá-lo desde o início porque ele reflete uma prática profissional real:
+
+Você **escreve** o script `.sql` no VS Code, aproveitando o realce de sintaxe e a organização por pastas. Você **salva** o arquivo na pasta da aula correspondente. Você **abre ou copia** o script no SSMS 21, que já está conectado ao SQL Server 2022. Você **executa** com `F5` e analisa os resultados na aba Results e as mensagens na aba Messages. Se precisar ajustar, você volta ao VS Code, faz a correção, salva e reexecuta no SSMS.
+
 ---
 
-## Diagrama Mermaid — Arquitetura do SQL Server 2017
+## Analogia de Ancoragem
+
+Pense no SQL Server como o **cofre central de um banco**. O cofre (SQL Server) guarda as caixas-fortes (bancos de dados). Cada caixa-forte (FinanceDB) contém gavetas organizadas (tabelas). Cada gaveta (tabela) tem fichas padronizadas (linhas) com campos bem definidos (colunas). O SSMS é o **painel de controle do cofre** — a interface pela qual o gerente (você) opera o sistema. O VS Code é a sua **mesa de trabalho** — onde você prepara os documentos antes de depositá-los no cofre. O T-SQL é o **protocolo oficial de comunicação** — a linguagem que o cofre entende para executar ordens.
+
+---
+
+## Diagrama Mermaid
 
 ~~~mermaid
-graph TD
-    Cliente["Cliente\n(SSMS / VS Code / Aplicação)"]
-    TDS["Protocolo TDS\nTCP/IP porta 1433"]
-    Parser["Parser\nValida sintaxe SQL"]
-    Algebrizer["Algebrizer\nValida objetos e permissões"]
-    Optimizer["Optimizer\nEscolhe o melhor plano"]
-    Executor["Executor\nExecuta o plano"]
-    BufferPool["Buffer Pool\nCache em RAM"]
-    StorageEngine["Storage Engine\nGerencia I/O"]
-    MDF["Arquivo .mdf\nDados primários"]
-    LDF["Arquivo .ldf\nLog de transações"]
+graph LR
+    A[VS Code\nEscrever e organizar scripts .sql] -->|Copiar ou abrir o arquivo| B[SSMS 21\nExecutar e visualizar resultados]
+    B -->|Ajustes e correções| A
+    B -->|Conecta e executa comandos| C[SQL Server 2022\nGerencia o banco de dados]
+    C -->|Retorna resultados e mensagens| B
 
-    Cliente --> TDS
-    TDS --> Parser
-    Parser --> Algebrizer
-    Algebrizer --> Optimizer
-    Optimizer --> Executor
-    Executor --> BufferPool
-    BufferPool --> StorageEngine
-    StorageEngine --> MDF
-    StorageEngine --> LDF
+    subgraph Projeto FinanceDB
+        D[plano_mestre.txt]
+        E[log_estado_projeto.md]
+        F[aula_01/README.md]
+        G[aula_01/exercicios/]
+    end
+
+    A --> D
+    A --> E
+    A --> F
+    A --> G
 ~~~
 
 ---
 
-## Aplicação no Projeto Prático — Código Comentado Linha a Linha
+## Aplicação no Projeto Prático
 
-O entregável desta primeira aula é um script de validação do ambiente. Ele confirma que o SQL Server 2017 está instalado corretamente, exibe as configurações da instância e cria a estrutura inicial de pastas lógicas do projeto no banco.
+Nesta primeira aula não há script SQL a ser executado — o foco é inteiramente na compreensão conceitual e na configuração do ambiente. Sua entrega prática desta aula é a estrutura de pastas do projeto criada no VS Code, conforme descrita acima.
 
-Salve este arquivo como: `modulo_01_essencial/aula_01/codigo/aula_01_setup.sql`
+Verifique se você consegue:
 
-~~~sql
--- ============================================================
--- FinanceCore DB — Aula 01
--- Script: aula_01_setup.sql
--- Objetivo: Validar o ambiente e explorar configurações da instância
--- Autor: FinanceCore DB
--- Data: Aula 01 — Módulo 1
--- ============================================================
+1. Abrir o VS Code com a pasta `FinanceDB` como raiz do projeto.
+2. Visualizar a estrutura de pastas no painel Explorer.
+3. Abrir o SSMS 21 e conectar ao SQL Server 2022 usando Windows Authentication.
+4. Ver o Object Explorer do SSMS com os bancos de dados do sistema (master, model, msdb, tempdb).
+5. Abrir um novo editor de queries no SSMS com `Ctrl + N`.
 
--- -------------------------------------------------------
--- BLOCO 1: Validação da versão do SQL Server
--- Confirma que estamos na versão correta (2017 = versão 14.x)
--- -------------------------------------------------------
-
--- Exibe a versão completa do SQL Server instalado
-SELECT @@VERSION AS VersaoCompleta;
-
--- Exibe apenas o número de versão principal
--- SQL Server 2017 retorna 14.x.x.x
-SELECT SERVERPROPERTY('ProductVersion') AS NumeroVersao,
-       SERVERPROPERTY('ProductLevel')   AS NivelServicoPack,
-       SERVERPROPERTY('Edition')        AS Edicao;
-
--- -------------------------------------------------------
--- BLOCO 2: Configurações da instância
--- Explora as configurações do servidor que afetam o comportamento
--- do SQL Server e que precisamos conhecer para o FinanceCore DB
--- -------------------------------------------------------
-
--- Lista as configurações do servidor (sp_configure mostra todas as opções)
--- 'show advanced options' = 1 é necessário para ver opções avançadas
-EXEC sp_configure 'show advanced options', 1;
-RECONFIGURE;
-
--- Exibe as configurações mais relevantes para sistemas financeiros
-EXEC sp_configure;
-
--- Configuração de memória máxima do servidor (em MB)
--- Em produção financeira, reservamos sempre ao menos 4 GB para o SO
--- e destinamos o restante ao SQL Server
-SELECT name, value_in_use
-FROM sys.configurations
-WHERE name IN (
-    'max server memory (MB)',   -- Memória máxima do Buffer Pool
-    'min server memory (MB)',   -- Memória mínima garantida
-    'max degree of parallelism',-- MAXDOP: paralelismo de queries
-    'cost threshold for parallelism', -- Quando paralelismo é acionado
-    'optimize for ad hoc workloads'   -- Otimização para workloads variados
-);
-
--- -------------------------------------------------------
--- BLOCO 3: Informações sobre a instância atual
--- -------------------------------------------------------
-
--- Nome do servidor e da instância
-SELECT
-    SERVERPROPERTY('MachineName')    AS NomeMaquina,        -- Nome do Windows
-    SERVERPROPERTY('ServerName')     AS NomeInstancia,      -- Nome completo da instância
-    SERVERPROPERTY('InstanceName')   AS NomeInstanciaSQL,   -- NULL = instância padrão
-    SERVERPROPERTY('IsClustered')    AS EhCluster,          -- 0 = standalone (nosso caso)
-    SERVERPROPERTY('Collation')      AS Collation;          -- Conjunto de caracteres padrão
-
--- -------------------------------------------------------
--- BLOCO 4: Bancos de dados existentes na instância
--- Verifica os bancos de sistema que todo SQL Server possui
--- -------------------------------------------------------
-
--- Lista todos os bancos de dados com seu estado e modelo de recuperação
-SELECT
-    name                AS NomeBanco,
-    database_id         AS ID,
-    state_desc          AS Estado,          -- ONLINE, OFFLINE, RESTORING, etc.
-    recovery_model_desc AS ModeloRecuperacao, -- SIMPLE, FULL, BULK_LOGGED
-    create_date         AS DataCriacao,
-    compatibility_level AS NivelCompatibilidade -- 140 = SQL Server 2017
-FROM sys.databases
-ORDER BY database_id;
-
--- -------------------------------------------------------
--- BLOCO 5: Verificação do Transaction Log e Checkpoints
--- -------------------------------------------------------
-
--- Verifica o status do log de transações de cada banco
--- log_reuse_wait_desc indica o que está impedindo a reutilização do log
-DBCC SQLPERF(LOGSPACE);
-
--- -------------------------------------------------------
--- BLOCO 6: Informações sobre os arquivos físicos da instância
--- -------------------------------------------------------
-
--- Lista os arquivos físicos de cada banco de dados
--- Útil para confirmar onde os arquivos .mdf e .ldf estão salvos
-SELECT
-    DB_NAME(database_id) AS NomeBanco,
-    name                 AS NomeLogico,
-    physical_name        AS CaminhoFisico,
-    type_desc            AS TipoArquivo,    -- ROWS (dados) ou LOG (log)
-    size * 8 / 1024      AS TamanhoMB       -- Tamanho em MB (size está em páginas de 8KB)
-FROM sys.master_files
-ORDER BY database_id, type_desc;
-
--- -------------------------------------------------------
--- BLOCO 7: Mensagem de confirmação do ambiente
--- -------------------------------------------------------
-
--- PRINT envia mensagem para a aba Messages do SSMS
--- Útil para confirmações e diagnósticos durante desenvolvimento
-PRINT '============================================';
-PRINT 'Ambiente FinanceCore DB validado com sucesso';
-PRINT 'SQL Server 2017 — Pronto para o Módulo 1';
-PRINT '============================================';
-
--- Retorna a data e hora atual do servidor
--- Em sistemas financeiros, sempre use SYSDATETIME() para precisão máxima
--- em vez de GETDATE() (que retorna apenas milissegundos, não nanossegundos)
-SELECT
-    GETDATE()       AS DataHoraServidor_Padrao,
-    SYSDATETIME()   AS DataHoraServidor_AltaPrecisao,
-    GETUTCDATE()    AS DataHoraUTC;
-~~~
+Se você conseguiu fazer tudo isso, o ambiente está configurado e você está pronto para a Aula 2.
 
 ---
 
 ## Glossário Técnico da Aula
 
-**SGBD (Sistema Gerenciador de Banco de Dados):** Software responsável por criar, manter, consultar e proteger bancos de dados. O SQL Server é um SGBD relacional.
+**Banco de Dados:** Conjunto organizado de dados armazenados de forma estruturada, gerenciado por um SGBD.
 
-**Instância:** Uma instalação independente e isolada do SQL Server rodando em um servidor. Pode haver múltiplas instâncias em uma mesma máquina física.
+**Modelo Relacional:** Modelo de organização de dados proposto por Edgar F. Codd em 1970, baseado em tabelas com relacionamentos entre si.
 
-**TDS (Tabular Data Stream):** Protocolo de comunicação proprietário da Microsoft usado para transmitir dados entre clientes e o SQL Server.
+**SGBD (Sistema Gerenciador de Banco de Dados):** Software responsável por criar, gerenciar, proteger e fornecer acesso aos dados. Exemplos: SQL Server, PostgreSQL, MySQL, Oracle.
 
-**Buffer Pool:** Área de memória RAM gerenciada pelo SQL Server onde as páginas de dados mais recentemente acessadas são mantidas em cache para acesso rápido.
+**SQL Server 2022:** SGBD relacional da Microsoft, versão mais recente, amplamente usado em ambientes corporativos e financeiros.
 
-**Transaction Log (.ldf):** Arquivo que registra cronologicamente todas as modificações feitas no banco de dados, garantindo durabilidade e possibilitando recovery.
+**T-SQL (Transact-SQL):** Variante do SQL padrão usada pelo SQL Server, com extensões procedurais e recursos avançados de tratamento de erros e lógica de programação.
 
-**Storage Engine:** Componente do SQL Server responsável por ler e gravar dados nos arquivos físicos em disco.
+**SQL (Structured Query Language):** Linguagem padrão para comunicação com SGBDs relacionais. Usada para criar, consultar, alterar e excluir dados.
 
-**Query Processor:** Componente do SQL Server que recebe, valida, otimiza e executa as queries T-SQL submetidas pelos clientes.
+**Tabela:** Estrutura bidimensional composta por colunas (atributos) e linhas (registros) que representa uma entidade do mundo real.
 
-**Collation:** Configuração que define as regras de ordenação e comparação de caracteres (maiúsculas/minúsculas, acentos, idioma). Crítico para sistemas que armazenam nomes de clientes em português.
+**Coluna (Campo/Atributo):** Componente vertical de uma tabela que define qual tipo de informação é armazenado. Exemplo: `Nome`, `Valor`, `Data`.
 
-**Página (Page):** Unidade mínima de I/O do SQL Server, com 8 KB de tamanho. Todos os dados são lidos e gravados em múltiplos de páginas.
+**Linha (Registro/Tupla):** Componente horizontal de uma tabela que representa uma ocorrência individual da entidade. Exemplo: um lançamento específico de R$ 150,00.
 
-**Checkpoint:** Processo periódico em que o SQL Server grava as páginas modificadas no Buffer Pool de volta aos arquivos de dados em disco.
+**SSMS (SQL Server Management Studio):** Ferramenta oficial da Microsoft para administrar e interagir com o SQL Server. Usada para executar scripts T-SQL e visualizar resultados.
 
-**SSMS (SQL Server Management Studio):** Interface gráfica oficial da Microsoft para administração e desenvolvimento em SQL Server.
+**Object Explorer:** Painel do SSMS que exibe em forma de árvore todos os objetos gerenciados pelo SQL Server: bancos de dados, tabelas, views, procedures, etc.
 
-**sp_configure:** Stored procedure do sistema que exibe e modifica as configurações globais da instância do SQL Server.
+**VS Code (Visual Studio Code):** Editor de código leve e extensível da Microsoft, usado neste curso como editor de scripts `.sql` e arquivos de documentação `.md`.
 
----
+**Instância do SQL Server:** Uma instalação independente do SQL Server em execução no sistema operacional. Um servidor pode ter múltiplas instâncias rodando simultaneamente.
 
-## Antecipação de Erros Comuns
-
-**Erro 1 — "Cannot connect to localhost"**
-Este é o erro mais comum na primeira aula. Geralmente indica que o serviço do SQL Server não está rodando ou que o protocolo TCP/IP está desabilitado. Como evitar: abra o SQL Server Configuration Manager, confirme que o serviço "SQL Server (MSSQLSERVER)" está com status "Running" e que o protocolo TCP/IP está habilitado. Após qualquer mudança de protocolo, reinicie o serviço.
-
-**Erro 2 — "Login failed for user"**
-Indica problema de autenticação. Em um ambiente de desenvolvimento local, sempre use "Windows Authentication" no SSMS. Se estiver usando SQL Server Authentication, verifique se o login está criado e se a senha está correta.
-
-**Erro 3 — "RECONFIGURE failed" após sp_configure**
-Indica que o usuário não tem permissão de sysadmin. Em ambiente local de desenvolvimento, conecte-se sempre com a conta Windows que foi usada durante a instalação do SQL Server, pois ela recebe permissão de sysadmin automaticamente.
-
-**Erro 4 — Confundir "banco de dados" com "instância"**
-Iniciantes frequentemente confundem os dois conceitos. Lembre-se: a instância é o "prédio" (o SQL Server em si), e os bancos de dados são os "apartamentos" dentro do prédio. Você pode ter dezenas de bancos dentro de uma única instância.
-
-**Erro 5 — Executar o script inteiro de uma vez**
-No início do aprendizado, execute cada bloco separadamente para entender o resultado de cada comando. Selecione apenas as linhas do bloco desejado e pressione F5 no SSMS.
+**ACID:** Conjunto de propriedades que garantem a confiabilidade de transações em bancos de dados: Atomicidade, Consistência, Isolamento e Durabilidade. Essencial em sistemas financeiros.
 
 ---
 
-## Troubleshooting — Como Debugar Problemas Comuns
+## Antecipação de Erros
 
-**Problema: O SSMS não aparece na lista de programas após a instalação**
-Solução: O SSMS 21 instala por padrão em C:\Program Files (x86)\Microsoft SQL Server Management Studio 21\. Procure por "ssms.exe" nesse caminho ou use a busca do Windows.
+**Erro: SQL Server não aparece no Object Explorer do SSMS**
+Causa provável: o serviço do SQL Server não está em execução. Solução: abra o **SQL Server Configuration Manager** (pesquise no menu Iniciar do Windows 11), localize o serviço **SQL Server (MSSQLSERVER)** ou **SQL Server (SQLEXPRESS)** e certifique-se de que o status é **Running**. Se estiver parado, clique com o botão direito e selecione **Start**.
 
-**Problema: A extensão mssql do VS Code não conecta ao servidor**
-Solução: Certifique-se de que o SQL Server está rodando, que o TCP/IP está habilitado e que a string de conexão usa "localhost" (ou o nome exato da máquina). Tente também "127.0.0.1,1433" como server name para forçar a conexão via TCP/IP explícito.
+**Erro: Falha de conexão no SSMS com mensagem "Cannot connect to ."**
+Causa provável: nome da instância incorreto. Tente as variações: `.`, `localhost`, `(local)`, `.\SQLEXPRESS` ou `NOME_DO_COMPUTADOR\SQLEXPRESS`. O nome correto depende de como o SQL Server foi instalado.
 
-**Problema: sp_configure retorna "You do not have permission"**
-Solução: Conecte-se ao SSMS usando a conta Windows administradora. Clique com o botão direito no servidor no Object Explorer → Properties → Security e confirme que "SQL Server and Windows Authentication mode" está selecionado se for usar SQL Authentication.
+**Erro: SSMS 21 não instala no Windows 11**
+Causa provável: versão do .NET Framework insuficiente ou permissão de administrador ausente. Certifique-se de executar o instalador como administrador (botão direito → Executar como administrador) e que o Windows 11 está atualizado.
 
-**Problema: DBCC SQLPERF(LOGSPACE) não retorna dados**
-Solução: Este comando requer pelo menos permissão VIEW SERVER STATE. Se você está conectado como sysadmin, deve funcionar normalmente. Verifique se há algum banco OFFLINE na lista — esses não aparecem no resultado.
+**Erro: VS Code não reconhece arquivos .sql com realce de sintaxe**
+Causa provável: extensão **SQL Server (mssql)** não instalada. Instale-a pelo painel de extensões (`Ctrl + Shift + X`) pesquisando por "mssql".
+
+**Erro: Pasta do projeto não aparece no VS Code**
+Causa provável: você abriu um arquivo individual em vez de uma pasta. Use sempre **File → Open Folder** para abrir a pasta `FinanceDB` completa como raiz do projeto.
+
+---
+
+## Troubleshooting
+
+Se o SSMS não consegue conectar ao SQL Server, o caminho de diagnóstico é sempre o mesmo: primeiro verifique se o **serviço do SQL Server está rodando** no SQL Server Configuration Manager. Segundo, verifique se o **protocolo TCP/IP está habilitado** nas configurações de rede do SQL Server Configuration Manager (em SQL Server Network Configuration → Protocols for MSSQLSERVER → TCP/IP deve estar **Enabled**). Terceiro, verifique se o **firewall do Windows** não está bloqueando a porta padrão do SQL Server (porta 1433). Para conexões locais no Windows 11, o Windows Authentication geralmente funciona sem problemas adicionais de firewall.
+
+Se o VS Code não salva arquivos na pasta do projeto, verifique se você tem **permissão de escrita** na pasta escolhida. Prefira pastas dentro de `C:\Projetos\` ou `C:\Users\SeuNome\Projetos\` que tipicamente não exigem permissão de administrador.
 
 ---
 
 ## Desafio de Fixação
 
-Com base no que aprendemos nesta aula, execute as seguintes tarefas no seu ambiente:
+Este exercício é conceitual — sem código. Responda com suas próprias palavras:
 
-**Desafio 1:** Execute o Bloco 1 do script aula_01_setup.sql e confirme que a versão retornada começa com "14." (que corresponde ao SQL Server 2017). Anote o número de versão completo.
+**Questão 1:** Qual é a diferença entre banco de dados, SGBD e SQL? Use uma analogia diferente da apresentada nesta aula para explicar os três conceitos.
 
-**Desafio 2:** Execute o Bloco 4 e identifique os quatro bancos de sistema que toda instância SQL Server possui por padrão. Pesquise a função de cada um deles.
+**Questão 2:** Por que o modelo relacional é preferível a guardar dados em planilhas separadas sem relacionamentos, no contexto de um sistema financeiro?
 
-**Desafio 3:** Execute o Bloco 6 e identifique os caminhos físicos onde os arquivos .mdf e .ldf dos bancos de sistema estão armazenados no seu Windows 11.
+**Questão 3:** No contexto do nosso projeto FinanceDB, identifique pelo menos três entidades do mundo real que provavelmente se tornarão tabelas no banco de dados. Justifique sua escolha.
 
-**Desafio 4:** Modifique o PRINT do Bloco 7 para incluir também o nome da instância (usando SERVERPROPERTY) na mensagem de confirmação, sem hardcodar o nome — o valor deve ser lido dinamicamente do servidor.
+**Questão 4:** Qual é o papel do VS Code e qual é o papel do SSMS no fluxo de trabalho do curso? O que aconteceria se você tentasse usar apenas um deles?
 
 ---
 
-## Resolução Comentada dos Desafios
+## Resoluções Comentadas
 
-**Resolução do Desafio 1:** A query `SELECT @@VERSION` retorna uma string como "Microsoft SQL Server 2017 (RTM-CU31) (KB5016884) - 14.0.3456.2 (X64)". O número "14" confirma SQL Server 2017. O formato é sempre MajorVersion.MinorVersion.Build.Revision.
+**Questão 1 — Resposta modelo:**
+Uma analogia diferente: pense em uma **biblioteca pública**. O **banco de dados** é o acervo de livros — o conjunto de informações armazenadas. O **SGBD** é o sistema de catalogação e os bibliotecários — o conjunto de regras, processos e pessoas que organizam, protegem e fornecem acesso ao acervo. O **SQL** é o sistema de requisição de livros — a linguagem padronizada que você usa para pedir "quero todos os livros de finanças publicados após 2020". Sem o sistema de catalogação (SGBD), o acervo seria um caos. Sem a linguagem de requisição (SQL), você não saberia como pedir o que quer.
 
-**Resolução do Desafio 2:** Os quatro bancos de sistema são: master (configurações da instância, logins e informações de todos os bancos), model (template usado para criar novos bancos — o FinanceCore herdará suas configurações padrão), msdb (usado pelo SQL Server Agent para jobs, alertas e histórico de backups) e tempdb (banco temporário recriado a cada reinício — usado para tabelas temporárias, operações de sort e spills de memória).
+**Questão 2 — Resposta modelo:**
+Planilhas separadas sem relacionamentos geram **redundância e inconsistência**. Se o nome de uma categoria de despesa aparece em 10.000 linhas de uma planilha de lançamentos e você precisa corrigi-lo, precisa alterar 10.000 linhas. No modelo relacional, a categoria existe em uma única tabela `Categorias` com uma linha, e todos os lançamentos simplesmente referenciam essa linha pelo identificador. A correção é feita em um único lugar e se reflete em todos os lançamentos instantaneamente. Além disso, sem relacionamentos formais, nada impede que um lançamento referencie uma categoria que não existe — o que geraria relatórios incorretos em um sistema financeiro.
 
-**Resolução do Desafio 3:** No Windows 11, por padrão, os arquivos ficam em `C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\`. O sufixo "14" no caminho confirma SQL Server 2017 e "MSSQLSERVER" identifica a instância padrão.
+**Questão 3 — Resposta modelo:**
+Três entidades naturais para o FinanceDB são **Categorias** (tipos de receita e despesa, como Salário, Alimentação, Transporte), **Contas** (onde o dinheiro fica ou passa, como Conta Corrente, Poupança, Carteira) e **Lançamentos** (cada entrada ou saída de dinheiro, com data, valor, descrição, categoria e conta associadas). Cada uma representa um conjunto de informações com atributos próprios e relacionamentos claros entre si.
 
-**Resolução do Desafio 4:**
-
-~~~sql
--- Versão dinâmica do PRINT com nome da instância lido do servidor
-DECLARE @Mensagem NVARCHAR(200);
-DECLARE @NomeInstancia NVARCHAR(100);
-
--- Lê o nome da instância dinamicamente
--- Quando é instância padrão, InstanceName retorna NULL
--- Nesse caso, usamos o MachineName como identificador
-SET @NomeInstancia = ISNULL(
-    CAST(SERVERPROPERTY('InstanceName') AS NVARCHAR(100)),
-    CAST(SERVERPROPERTY('MachineName')  AS NVARCHAR(100))
-);
-
--- Monta a mensagem dinâmica concatenando o nome da instância
-SET @Mensagem = '=== FinanceCore DB validado na instância: '
-                + @NomeInstancia + ' ===';
-
--- Exibe a mensagem na aba Messages do SSMS
-PRINT @Mensagem;
-~~~
+**Questão 4 — Resposta modelo:**
+O **VS Code** serve para escrever, organizar e versionar os scripts e arquivos do projeto — é o editor, a prancheta. O **SSMS 21** serve para executar os scripts contra o SQL Server e visualizar resultados — é a bancada de testes. Usar apenas o SSMS seria possível tecnicamente, mas os scripts ficariam desorganizados sem a estrutura de pastas, sem versionamento Git e sem a experiência de edição do VS Code. Usar apenas o VS Code (com a extensão mssql) é possível para scripts simples, mas o SSMS oferece ferramentas muito mais ricas para análise de planos de execução, Object Explorer e administração do servidor — essenciais à medida que o projeto avança.
 
 ---
 
 ## Resumo dos Pontos-Chave
 
-O SQL Server 2017 é um SGBD relacional composto por quatro grandes componentes: o Protocolo de Rede (TDS), o Query Processor (Parser + Algebrizer + Optimizer + Executor), o Storage Engine e o Buffer Pool. Compreender a função de cada componente é essencial para tomar decisões corretas de design e performance em sistemas financeiros. Uma instância é um ambiente SQL Server completo e isolado — pode existir mais de uma por servidor. Os arquivos físicos do banco são o .mdf (dados primários), o .ndf (dados secundários opcionais) e o .ldf (log de transações). O Transaction Log é o mecanismo central de integridade e recuperação. O ambiente de desenvolvimento do curso usa SSMS 21 para administração e execução, e VS Code com extensão mssql para edição e versionamento dos scripts.
+O **modelo relacional** organiza dados em tabelas com linhas e colunas, permitindo relacionamentos entre entidades — ideal para sistemas financeiros onde precisão e integridade são críticas. **Banco de dados**, **SGBD** e **SQL** são três coisas distintas: o conteúdo, o motor e o idioma, respectivamente. O **SQL Server 2022** é o SGBD escolhido por sua confiabilidade transacional, precisão numérica e ampla adoção no mercado financeiro. O **SSMS 21** é a ferramenta de execução e o **VS Code** é o editor do projeto — as duas ferramentas se complementam e refletem um fluxo de trabalho profissional real. O projeto **FinanceDB** será construído incrementalmente ao longo das 24 aulas, e sua estrutura de pastas já foi criada nesta aula.
+
+---
+
+## Próximos Passos
+
+Na próxima aula, aprenderemos sobre **criação de bancos de dados no SQL Server** — você escreverá seu primeiro script T-SQL real, criará o banco `FinanceDB` e entenderá o que acontece nos bastidores quando o SQL Server processa um comando `CREATE DATABASE`.
 
 ---
 
 ## Log de Estado do Projeto
 
-~~~markdown
-## Aula 01: Introdução ao SQL Server 2017 — Arquitetura, Instâncias e o Ambiente Profissional
-- **Objetivo:** Configurar o ambiente completo e validar a instalação do SQL Server 2017.
-- **Código Adicionado:** modulo_01_essencial/aula_01/codigo/aula_01_setup.sql
-- **Estado Funcional:** ✅ Ambiente validado. Script de diagnóstico executado com sucesso.
-- **Objetos Criados no Banco:** Nenhum (apenas consultas de diagnóstico — sem DDL ainda).
-- **Próximas Etapas:** Aula 02 criará o banco de dados FinanceCore DB com filegroups, configurações profissionais e o Transaction Log dimensionado para ambiente financeiro.
+- **Objetivo:** Configurar o ambiente de desenvolvimento e compreender os fundamentos conceituais
+- **Código Adicionado:** Nenhum script SQL ainda — apenas estrutura de pastas e arquivos de documentação
+- **Estado Funcional:** ⏳ Ambiente configurado, aguardando primeiro script na Aula 2
+- **Objetos Criados:** Pasta `FinanceDB/`, `README.md`, `log_estado_projeto.md`, `plano_mestre.txt`, `prompts_individuais.md`, `.gitignore`, pasta `aula_01/` com README e exercício
+- **Próximas Etapas:** Escrever e executar o primeiro script T-SQL — `CREATE DATABASE FinanceDB`
+
+---
+
+## Prompt de Continuidade para a Aula 2
+
+~~~text
+Você é o Tutor Sênior do curso "SQL Server para Aplicações Financeiras com T-SQL", conforme definido no plano_mestre.txt anexo. Consulte também o log_estado_projeto.md para ver o estado atual do projeto. O aluno usa Windows 11, VS Code como editor e SSMS 21 para execução. SQL Server 2022. Iniciante absoluto.
+
+Na Aula 1 foram cobertos: conceito de banco de dados relacional, diferença entre banco de dados/SGBD/SQL, apresentação do SQL Server 2022 e SSMS 21, configuração do VS Code, fluxo de trabalho VS Code → SSMS e criação da estrutura de pastas do projeto. Nenhum script SQL foi executado ainda.
+
+Use apenas comandos introduzidos nesta aula. Gere a Aula 2 completa com no mínimo 2.000 palavras de conteúdo teórico.
+
+**Aula 2 — Criando o Banco de Dados FinanceDB**
+
+Conteúdo esperado:
+- O que é um banco de dados no contexto do SQL Server
+- Analogia do cotidiano para o banco de dados como um "cofre organizado"
+- O que são os arquivos MDF e LDF e por que o SQL Server usa dois arquivos
+- Conceito de instância do SQL Server
+- Bancos de dados do sistema (master, model, msdb, tempdb) — apenas conceitual
+- Comando CREATE DATABASE: sintaxe básica, explicação de cada parte
+- Comando USE: para que serve e como usar
+- Comando DROP DATABASE: o que faz e por que exige atenção redobrada
+- Como visualizar o banco criado no SSMS (Object Explorer)
+- Fluxo: VS Code → salvar como criar_banco.sql em aula_02/codigo/ → abrir no SSMS → executar
+- Script comentado linha a linha
+- Diagrama Mermaid mostrando a relação entre instância, banco de dados e arquivos MDF/LDF
+- Glossário técnico da aula
+- Antecipação de erros: banco já existe, permissão insuficiente, nome com caracteres inválidos
+- Exercício de fixação com resolução comentada
+- Log de Estado do Projeto atualizado
+- Prompt de continuidade para a Aula 3
+
+O documento inteiro deve estar dentro de um bloco ```markdown. Blocos internos de código SQL usam ~~~sql. Blocos de texto puro usam ~~~text. Diagramas usam ~~~mermaid. Nenhum bloco interno usa triple backtick. Não quebre linhas de parágrafos.
 ~~~
 
 ---
 
-## Prompt de Continuidade para a Aula 02
-
-~~~
-Você é o Tutor Sênior: fusão de Engenheiro de Software Sênior, Designer Instrucional de Elite e Escritor de Livros Técnicos. Siga rigorosamente o Prompt Mestre v1.1. Os arquivos plano_mestre.txt e log_estado_projeto.md estão anexados para contexto completo.
-
-CONTEXTO DO ALUNO:
-- Sistema Operacional: Windows 11
-- IDEs: VS Code + SSMS 21
-- SQL Server: versão 2017 (compatibilidade 140)
-- Projeto: FinanceCore DB — Sistema de Gestão Financeira Corporativa
-
-CONTEXTO DA AULA ANTERIOR (AULA 01):
-- Ambiente configurado e validado com sucesso
-- Script aula_01_setup.sql executado — diagnóstico da instância realizado
-- Conceitos cobertos: arquitetura SQL Server, Buffer Pool, Storage Engine, Transaction Log, instâncias, SSMS 21, VS Code mssql
-- Nenhum objeto DDL criado ainda no banco
-
-AULA A GERAR:
-- Número: 02
-- Título: Criando o Banco de Dados FinanceCore — Filegroups, Arquivos e Configurações
-- Módulo: 1 — Essencial
-
-OBJETIVOS ESPECÍFICOS:
-- Compreender a estrutura física de um banco de dados SQL Server (arquivos .mdf, .ndf, .ldf)
-- Entender Filegroups e sua importância para organização e performance em sistemas financeiros
-- Configurar opções críticas do banco: RECOVERY MODEL, AUTO_CLOSE, AUTO_SHRINK, COMPATIBILITY_LEVEL
-- Criar o banco de dados FinanceCore DB com configurações profissionais para ambiente financeiro
-- Entender o Transaction Log e seu papel na integridade dos dados financeiros
-
-ENTREGÁVEL DO PROJETO:
-- Banco de dados FinanceCore DB criado com filegroups separados (PRIMARY, FINANCEIRO, HISTORICO, INDICES)
-- Script de criação completo e comentado: create_database.sql
-- Validação das configurações com queries de diagnóstico
-- README.md da aula_02 preenchido
-
-INSTRUÇÕES OBRIGATÓRIAS:
-- Siga a estrutura completa de aula definida no Prompt Mestre v1.1
-- Mínimo de 2.000 palavras na seção de teoria
-- Inclua analogia de ancoragem antes de cada conceito técnico novo
-- Inclua diagrama Mermaid escapado com ~~~mermaid ilustrando a estrutura de arquivos do banco
-- Inclua todo o código comentado linha a linha
-- Inclua glossário técnico, antecipação de erros, troubleshooting e desafio de fixação
-- Inclua log de estado do projeto atualizado
-- Gere o prompt de continuidade para a Aula 03 ao final
-- Gere toda a saída dentro de um bloco de código markdown
-- Não quebre linhas de parágrafos
-- Blocos internos escapados com ~~~
-~~~
-
----
-
-Dúvidas? Posso prosseguir para a Aula 02?
+Dúvidas? Posso prosseguir para a Aula 2?

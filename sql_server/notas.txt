@@ -1,0 +1,16 @@
+Tema: SQL Server, para aplicações financeiras com T-SQL.
+Estou usando o windows 11.
+Estou usando o SQL Server Management Studio 21
+A Versão é a 2022 do SQL Server
+Quero que aborde todos os conteúdos, teoria e prática, tenha em mente que o público é iniciante, não coloque scripts muito complexos, com muitas linhas, ou que usem recursos avançados. O foco é ensinar os conceitos básicos e a sintaxe do T-SQL, para que o aluno possa começar a escrever suas próprias consultas e entender como o SQL Server funciona. Não coloque comandos ainda não abordados nos scripts, o conhecimento deverá ser construído passo a passo.
+
+
+O padrão correto que deve ser seguido no documento é este:
+
+O documento inteiro fica dentro de ```markdown (abre) e ``` (fecha)
+Blocos internos de código SQL, java, javascript e outras linguagens usam ~~~ abrindo e fechando
+Blocos internos de texto puro usam ~~~text e ~~~
+Blocos internos de diagrama usam ~~~mermaid e ~~~
+Nenhum bloco interno usa triple backtick ```
+Não quebre linhas de parágrafos, a não ser que seja necessário para a formatação do markdown ou para a clareza do texto.
+Use negrito para destacar palavras-chave, conceitos importantes e comandos.
