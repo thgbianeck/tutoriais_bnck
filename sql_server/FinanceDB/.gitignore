@@ -1,0 +1,15 @@
+# SQL Server {#sql-server  data-source-line="289"}
+*.bak
+*.mdf
+*.ldf
+*.trc
+*.xel
+
+# SSMS {#ssms  data-source-line="296"}
+*.suo
+*.user
+*.ssmssqlproj.bak
+
+# Windows {#windows  data-source-line="301"}
+Thumbs.db
+desktop.ini

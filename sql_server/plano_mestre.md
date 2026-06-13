@@ -1,158 +1,130 @@
-# PASSO 1: O MAPA DA MINA — Planejamento Mestre do Curso (Revisado)
-
-## SQL Server para Aplicações Financeiras com T-SQL
+# PASSO 1: O MAPA DA MINA
+## Planejamento Mestre — SQL Server para Aplicações Financeiras com T-SQL
+## Trilha: Desenvolvimento T-SQL + Domínio Completo para Certificação
 
 ---
 
-## Informações do Ambiente
+## Configuração do Ambiente Detectada
 
 - **Sistema Operacional:** Windows 11
-- **Editor de Arquivos do Projeto:** Visual Studio Code (VS Code) — para editar, organizar e versionar arquivos `.sql`, `.md` e demais arquivos do projeto
-- **Execução de Comandos SQL:** SQL Server Management Studio 21 (SSMS 21) — para conectar ao SQL Server, executar scripts e visualizar resultados
-- **Versão do SQL Server:** SQL Server 2022
-- **Perfil do Aluno:** Iniciante absoluto em SQL/T-SQL, com experiência em engenharia
-- **Foco:** Conceitos básicos, sintaxe T-SQL, construção progressiva do conhecimento
+- **IDE/Editor:** SQL Server Management Studio (SSMS)
+- **Versão:** SQL Server 2022
+- **Público-alvo:** Iniciante absoluto em SQL Server e T-SQL com objetivo de certificação
+- **Foco:** T-SQL do zero ao avançado, teoria sólida, administração essencial e preparo para certificação
 
 ---
 
-## Fluxo de Trabalho com as Duas Ferramentas
+## Filosofia e Metodologia do Curso
 
-A separação entre editor e executor é uma prática profissional muito comum. Pense assim: o **VS Code** é sua **prancheta de projeto** — onde você escreve, organiza, versiona e documenta. O **SSMS 21** é sua **bancada de testes** — onde você conecta ao banco, executa os scripts e analisa os resultados. As duas ferramentas se complementam perfeitamente.
+Este curso é estruturado sobre duas bases pedagógicas complementares: a **Metodologia ADDIE** e a **Taxonomia de Bloom**. A **Metodologia ADDIE** organiza o curso em cinco fases — **Análise** (identificar o que o aluno precisa aprender), **Design** (planejar a estrutura e os materiais), **Desenvolvimento** (criar o conteúdo detalhado e prático), **Implementação** (apresentar cada aula com confirmação do aluno) e **Avaliação** (validar a compreensão por meio de desafios e do projeto incremental). A **Taxonomia de Bloom** garante que cada aula evolua em complexidade cognitiva: partimos de **Lembrar** e **Compreender** (teoria e analogias), passamos por **Aplicar** e **Analisar** (projeto prático e exercícios) e chegamos a **Avaliar** e **Criar** (desafios e projeto final). Juntas, essas metodologias garantem que nenhum conceito seja apresentado sem que o anterior tenha sido solidamente construído.
 
-~~~mermaid
-graph LR
-    A[VS Code\nEditar e organizar arquivos .sql e .md] -->|Abre o arquivo ou copia o script| B[SSMS 21\nExecutar scripts e visualizar resultados]
-    B -->|Resultados e ajustes| A
-~~~
-
-**Fluxo prático de cada aula:**
-- Você escreve e salva o script `.sql` no **VS Code**
-- Abre o SSMS 21, conecta ao SQL Server 2022 e abre ou cola o script
-- Executa e analisa os resultados diretamente no SSMS 21
-- Volta ao VS Code para ajustar, documentar e versionar
-
----
-
-## Extensões Recomendadas para o VS Code
-
-Para trabalhar com arquivos `.sql` e `.md` no VS Code de forma produtiva, instale as seguintes extensões:
-
-- **SQL Server (mssql)** — da Microsoft: realce de sintaxe T-SQL, IntelliSense e execução direta de queries (opcional, mas útil para revisar scripts sem sair do VS Code)
-- **Markdown All in One** — para visualizar e editar arquivos `.md` com conforto
-- **GitLens** — para versionamento Git com interface visual dentro do VS Code
-- **Material Icon Theme** — para identificar visualmente os tipos de arquivo nas pastas do projeto
+A **Técnica de Feynman** permeia todas as aulas: cada conceito técnico novo é explicado como se o aluno nunca tivesse ouvido falar sobre ele, com analogias do cotidiano que ancoram o entendimento antes de qualquer formalização técnica. O resultado é uma narrativa densa, literária e profundamente conectada à prática.
 
 ---
 
 ## Nome e Objetivo do Projeto Prático Incremental
 
-**Nome do Projeto:** `FinanceDB` — Sistema de Controle Financeiro Pessoal
+**Nome do Projeto:** FinanceDB — Sistema de Controle Financeiro Corporativo
 
-**Descrição:** Ao longo do curso, você construirá um banco de dados completo para controle financeiro pessoal. Começando pela criação do banco e das primeiras tabelas, passando por inserção de dados, consultas, relacionamentos, funções financeiras e relatórios, até chegar a um sistema funcional com visões, procedimentos armazenados e boas práticas de segurança. Cada aula entrega uma parte funcional e testável do projeto.
-
-**Por que este projeto?** Aplicações financeiras são o contexto ideal para aprender SQL: elas exigem precisão, integridade de dados, relacionamentos claros e consultas analíticas — exatamente o que o T-SQL oferece de melhor.
+**Descrição:** Ao longo do curso, construiremos progressivamente um banco de dados financeiro chamado **FinanceDB**. Ele simulará um sistema de controle financeiro corporativo completo, com cadastro de empresas, contas bancárias, plano de contas, categorias de transações, lançamentos de receitas e despesas, controle de orçamento, relatórios gerenciais e auditoria de operações. Cada aula adicionará uma camada funcional ao projeto, de modo que ao final o aluno terá um banco de dados real, funcional, seguro e otimizado — construído por ele mesmo, do zero ao domínio absoluto.
 
 ---
 
-## Estrutura de Módulos
+## Divisão em Módulos
 
-### Módulo 1 — Essencial: Fundamentos (Aulas 1 a 8)
+### Módulo 1 — FUNDAMENTOS: Teoria e Ambiente (Aulas 1 a 6)
+O aluno compreende o que é um banco de dados relacional, como o SQL Server funciona internamente, como configurar o ambiente e quais são os pilares teóricos que sustentam tudo o que virá a seguir. Este módulo é denso em teoria e essencial para quem busca certificação.
 
-Neste módulo você sairá do zero absoluto e chegará à capacidade de criar bancos de dados, tabelas, inserir dados e realizar consultas básicas. É a base sobre a qual tudo o mais será construído.
+### Módulo 2 — ESSENCIAL: T-SQL Básico (Aulas 7 a 14)
+O aluno domina os comandos fundamentais do T-SQL: criar estruturas, inserir, consultar, filtrar, ordenar, atualizar e remover dados. O projeto FinanceDB ganha sua estrutura base.
 
-### Módulo 2 — Proficiente: Prática e Relacionamentos (Aulas 9 a 16)
+### Módulo 3 — PROFICIENTE: Relacionamentos e Consultas Avançadas (Aulas 15 a 22)
+O aluno aprende a combinar tabelas, usar funções de agregação, agrupar dados, trabalhar com datas e texto, e construir subconsultas. Os relatórios financeiros ganham profundidade real.
 
-Aqui você aprenderá a trabalhar com múltiplas tabelas, relacionamentos, junções (JOINs), agrupamentos, funções de agregação e subconsultas. Você começará a escrever consultas que respondem perguntas reais de negócio.
+### Módulo 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade (Aulas 23 a 30)
+O aluno domina Views, Stored Procedures, Functions, Triggers e Transações. O projeto passa a ter lógica de negócio encapsulada e protegida.
 
-### Módulo 3 — Mestre: Otimização e Recursos Avançados (Aulas 17 a 24)
+### Módulo 5 — ESPECIALISTA: Administração, Segurança e Performance (Aulas 31 a 37)
+O aluno aprende a administrar o SQL Server, gerenciar usuários e permissões, criar backups, monitorar performance, criar índices e otimizar consultas. Conteúdo crítico para certificação.
 
-Neste módulo você dominará Views, Stored Procedures, funções definidas pelo usuário, tratamento de erros, transações, índices e boas práticas de segurança para ambientes financeiros.
+### Módulo 6 — MESTRE: Azure SQL, Certificação e Projeto Final (Aulas 38 a 42)
+O aluno conhece o Azure SQL Database, entende as diferenças entre o SQL Server on-premises e a nuvem, e consolida todo o conhecimento no projeto final e na revisão para certificação.
 
 ---
 
 ## Lista Completa de Aulas
 
-### Módulo 1 — Essencial: Fundamentos
+### MÓDULO 1 — FUNDAMENTOS: Teoria e Ambiente
 
-**Aula 1 — O que é um Banco de Dados Relacional e por que o SQL Server?**
-Conceito de banco de dados relacional, tabelas, linhas e colunas. Diferença entre banco de dados, SGBD e linguagem SQL. Apresentação do SQL Server 2022 e do SSMS 21. Configuração do VS Code como editor do projeto. Primeira conexão ao SSMS e tour pela interface. Nenhum script ainda — apenas compreensão conceitual e orientação de ambiente.
+| # | Título da Aula | Objetivo Principal |
+|---|---|---|
+| 1 | O Que é um Banco de Dados Relacional | Entender o modelo relacional, tabelas, linhas, colunas e o conceito de dado estruturado |
+| 2 | Teoria dos Bancos de Dados — Normalização e Formas Normais | Compreender 1FN, 2FN e 3FN com exemplos financeiros práticos |
+| 3 | O SQL Server por Dentro — Arquitetura e Componentes | Entender como o SQL Server processa queries, gerencia memória e armazena dados |
+| 4 | Instalação e Configuração do Ambiente | Instalar o SQL Server 2022 e o SSMS no Windows 11 e configurar o ambiente |
+| 5 | Navegando no SSMS — Interface e Recursos Essenciais | Dominar a interface do SSMS, Object Explorer, Query Editor e atalhos essenciais |
+| 6 | Tipos de Dados no SQL Server — Teoria e Escolha Correta | Entender todos os tipos de dados disponíveis e como escolhê-los corretamente |
 
-**Aula 2 — Criando o Banco de Dados FinanceDB**
-Conceito de banco de dados no SQL Server, arquivos MDF e LDF, conceito de instância. Comando `CREATE DATABASE`. Comando `USE`. Comando `DROP DATABASE` (com cuidado). Primeira estrutura do projeto criada no VS Code e executada no SSMS.
+### MÓDULO 2 — ESSENCIAL: T-SQL Básico
 
-**Aula 3 — Tipos de Dados no SQL Server: Escolhendo com Precisão**
-Por que a escolha do tipo de dado importa em aplicações financeiras. Tipos numéricos (`INT`, `BIGINT`, `DECIMAL`, `NUMERIC`, `MONEY`). Tipos de texto (`VARCHAR`, `NVARCHAR`, `CHAR`). Tipos de data (`DATE`, `DATETIME`, `DATETIME2`). Tipo lógico (`BIT`). Como escolher o tipo certo para cada coluna.
+| # | Título da Aula | Objetivo Principal |
+|---|---|---|
+| 7 | Criando o Banco de Dados — CREATE DATABASE | Criar o banco FinanceDB com configurações adequadas |
+| 8 | Criando Tabelas — CREATE TABLE e Constraints Básicas | Criar tabelas com **NOT NULL**, **DEFAULT** e **CHECK** |
+| 9 | Chaves Primárias e Estrangeiras — PRIMARY KEY e FOREIGN KEY | Implementar integridade referencial no FinanceDB |
+| 10 | Inserindo Dados — INSERT INTO | Popular tabelas com dados financeiros reais |
+| 11 | Consultando Dados — SELECT e suas Variações | Dominar o **SELECT**, aliases, colunas calculadas e **DISTINCT** |
+| 12 | Filtrando Dados — WHERE, AND, OR, NOT e BETWEEN | Construir filtros compostos para consultas financeiras |
+| 13 | Ordenando e Limitando — ORDER BY, TOP e OFFSET-FETCH | Controlar ordem e paginação de resultados |
+| 14 | Modificando e Removendo — UPDATE e DELETE com segurança | Atualizar e excluir registros com cláusulas de proteção |
 
-**Aula 4 — Criando Tabelas: A Estrutura do FinanceDB**
-Comando `CREATE TABLE`. Conceito de chave primária (`PRIMARY KEY`). Conceito de `NOT NULL` e `NULL`. Conceito de `DEFAULT`. Criação das primeiras tabelas do projeto: `Categorias` e `Contas`. Script escrito no VS Code e executado no SSMS.
+### MÓDULO 3 — PROFICIENTE: Relacionamentos e Consultas Avançadas
 
-**Aula 5 — Inserindo Dados: Populando o FinanceDB**
-Comando `INSERT INTO ... VALUES`. Inserção de múltiplas linhas. Regras de inserção por tipo de dado (aspas para texto, formatos de data, valores decimais). Inserção nas tabelas `Categorias` e `Contas`.
+| # | Título da Aula | Objetivo Principal |
+|---|---|---|
+| 15 | Combinando Tabelas — INNER JOIN | Unir tabelas para consultas financeiras completas |
+| 16 | Outros JOINs — LEFT, RIGHT e FULL OUTER JOIN | Entender e aplicar cada tipo de junção com exemplos financeiros |
+| 17 | Auto-relacionamento — SELF JOIN | Usar SELF JOIN para hierarquias de plano de contas |
+| 18 | Funções de Agregação — SUM, COUNT, AVG, MIN e MAX | Calcular totais, médias e contagens de transações financeiras |
+| 19 | Agrupando Dados — GROUP BY e HAVING | Produzir relatórios financeiros agrupados por categoria e período |
+| 20 | Funções de Data e Hora no T-SQL | Manipular datas em lançamentos, vencimentos e períodos financeiros |
+| 21 | Funções de Texto no T-SQL | Manipular strings em descrições, nomes e códigos |
+| 22 | Subconsultas — Subqueries Correlacionadas e Não Correlacionadas | Usar subqueries para cálculos e filtros intermediários |
 
-**Aula 6 — Consultando Dados: O Comando SELECT**
-Estrutura fundamental do `SELECT`. Seleção de todas as colunas com `*`. Seleção de colunas específicas. Uso de `AS` para aliases. Conceito de resultado (result set). Primeiras consultas no FinanceDB.
+### MÓDULO 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade
 
-**Aula 7 — Filtrando Dados: A Cláusula WHERE**
-Cláusula `WHERE` e operadores de comparação (`=`, `<>`, `>`, `<`, `>=`, `<=`). Operadores lógicos (`AND`, `OR`, `NOT`). Operador `BETWEEN`. Operador `IN`. Operador `LIKE` e curingas (`%`, `_`). Filtrando dados financeiros com precisão.
+| # | Título da Aula | Objetivo Principal |
+|---|---|---|
+| 23 | Expressões de Tabela — CTEs com WITH | Usar **Common Table Expressions** para consultas legíveis e recursivas |
+| 24 | Funções de Janela — OVER, PARTITION BY e ROW_NUMBER | Calcular rankings, totais acumulados e médias móveis financeiras |
+| 25 | Views — Criando Relatórios Reutilizáveis | Encapsular consultas financeiras recorrentes em **Views** |
+| 26 | Stored Procedures — Automatizando Operações | Criar **Procedures** com parâmetros para operações financeiras |
+| 27 | Funções T-SQL — Scalar e Table-Valued Functions | Criar funções reutilizáveis para cálculos financeiros |
+| 28 | Triggers — Auditoria e Regras de Negócio Automáticas | Criar **Triggers** para registrar auditoria de operações financeiras |
+| 29 | Transações — BEGIN TRANSACTION, COMMIT e ROLLBACK | Garantir atomicidade e integridade em operações financeiras críticas |
+| 30 | Tratamento de Erros — TRY...CATCH e THROW | Capturar e tratar erros em procedures e transações financeiras |
 
-**Aula 8 — Ordenando e Limitando Resultados**
-Cláusula `ORDER BY` (ASC e DESC). Cláusula `TOP`. Conceito de `NULL` em ordenações. Consultas ordenadas de extratos e lançamentos financeiros.
+### MÓDULO 5 — ESPECIALISTA: Administração, Segurança e Performance
 
----
+| # | Título da Aula | Objetivo Principal |
+|---|---|---|
+| 31 | Segurança no SQL Server — Logins, Usuários e Roles | Criar e gerenciar acessos com **GRANT**, **DENY** e **REVOKE** |
+| 32 | Schemas — Organizando Objetos com Namespaces | Usar **schemas** para separar contextos no FinanceDB |
+| 33 | Backup e Restore — Protegendo os Dados Financeiros | Executar backups completos, diferenciais e de log de transações |
+| 34 | Índices — Teoria e Criação para Alta Performance | Entender **Clustered** e **Non-Clustered Index** e quando usá-los |
+| 35 | Analisando Queries — Execution Plan e Query Store | Ler e interpretar planos de execução para otimizar consultas |
+| 36 | Monitoramento e Diagnóstico — DMVs e Estatísticas | Usar **Dynamic Management Views** para monitorar o SQL Server |
+| 37 | Concorrência e Isolamento — Locks, Deadlocks e Níveis de Isolamento | Entender como o SQL Server gerencia acessos simultâneos |
 
-### Módulo 2 — Proficiente: Prática e Relacionamentos
+### MÓDULO 6 — MESTRE: Azure SQL, Certificação e Projeto Final
 
-**Aula 9 — Chaves Estrangeiras e Integridade Referencial**
-Conceito de relacionamento entre tabelas. `FOREIGN KEY` e integridade referencial. `ON DELETE` e `ON UPDATE`. Criação da tabela `Lancamentos` com relacionamentos. Diagrama de relacionamentos do FinanceDB.
-
-**Aula 10 — Alterando e Removendo Dados: UPDATE e DELETE**
-Comando `UPDATE ... SET ... WHERE`. Comando `DELETE ... WHERE`. Perigos de executar sem `WHERE`. Boas práticas de segurança em ambientes financeiros. Auditoria de mudanças.
-
-**Aula 11 — Alterando a Estrutura de Tabelas: ALTER TABLE**
-Comando `ALTER TABLE` para adicionar, modificar e remover colunas. Restrições com `CONSTRAINT`. Adicionando colunas de auditoria (`DataCriacao`, `DataAtualizacao`) ao projeto.
-
-**Aula 12 — Funções de Agregação: Resumindo Dados Financeiros**
-Funções `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`. Cláusula `GROUP BY`. Cláusula `HAVING`. Relatórios de totais por categoria, saldo por conta e médias de gastos.
-
-**Aula 13 — Junções entre Tabelas: INNER JOIN**
-Conceito de JOIN e por que ele existe. `INNER JOIN` — apenas os registros que têm correspondência. Consultas cruzando `Lancamentos`, `Categorias` e `Contas`. Extratos completos com nomes de categorias.
-
-**Aula 14 — Mais Junções: LEFT JOIN, RIGHT JOIN e conceito de FULL JOIN**
-`LEFT JOIN` — todos os registros da tabela da esquerda. `RIGHT JOIN` — todos os registros da tabela da direita. Conceito de `FULL JOIN`. Identificando lançamentos sem categoria e contas sem movimentação.
-
-**Aula 15 — Subconsultas: Consultas dentro de Consultas**
-O que é uma subconsulta (subquery). Subconsultas na cláusula `WHERE`. Subconsultas na cláusula `SELECT`. Operadores `EXISTS` e `NOT EXISTS`. Consultas financeiras que dependem de resultados intermediários.
-
-**Aula 16 — Funções de Data e Texto no T-SQL**
-Funções de data: `GETDATE()`, `YEAR()`, `MONTH()`, `DAY()`, `DATEDIFF()`, `DATEADD()`, `FORMAT()`. Funções de texto: `LEN()`, `UPPER()`, `LOWER()`, `TRIM()`, `CONCAT()`, `SUBSTRING()`. Aplicações práticas em relatórios financeiros.
-
----
-
-### Módulo 3 — Mestre: Otimização e Recursos Avançados
-
-**Aula 17 — Views: Criando Janelas para seus Dados**
-O que é uma View e por que usá-la. Comando `CREATE VIEW`. Benefícios de segurança e simplicidade. Criando views de extrato mensal e resumo por categoria no FinanceDB.
-
-**Aula 18 — Stored Procedures: Automatizando Operações Financeiras**
-O que é uma Stored Procedure. Comando `CREATE PROCEDURE`. Parâmetros de entrada. Executando com `EXEC`. Criando procedures para inserir lançamentos e gerar relatórios.
-
-**Aula 19 — Variáveis e Controle de Fluxo no T-SQL**
-Declaração de variáveis com `DECLARE` e `SET`. Estrutura `IF ... ELSE`. Estrutura `WHILE`. `PRINT` para debug. Lógica condicional em contextos financeiros.
-
-**Aula 20 — Transações: Garantindo a Integridade Financeira**
-O que é uma transação e por que é crítica em sistemas financeiros. `BEGIN TRANSACTION`, `COMMIT` e `ROLLBACK`. Propriedades ACID. Exemplo prático de transferência entre contas com segurança transacional.
-
-**Aula 21 — Tratamento de Erros com TRY...CATCH**
-Bloco `TRY...CATCH` no T-SQL. Funções `ERROR_MESSAGE()`, `ERROR_NUMBER()`, `ERROR_LINE()`. Combinando transações com tratamento de erros. Procedures robustas para o FinanceDB.
-
-**Aula 22 — Funções Definidas pelo Usuário (UDFs)**
-`CREATE FUNCTION` — funções escalares. Diferença entre funções e procedures. Criando funções financeiras reutilizáveis (ex: calcular saldo de uma conta em uma data).
-
-**Aula 23 — Índices: Otimizando Consultas Financeiras**
-O que é um índice e como funciona internamente. Índice Clustered vs. Non-Clustered. Quando criar e quando evitar índices. Criando índices estratégicos no FinanceDB.
-
-**Aula 24 — Segurança, Boas Práticas e Conclusão do Projeto**
-Logins e usuários no SQL Server. Permissões com `GRANT`, `DENY`, `REVOKE`. Boas práticas de nomenclatura, documentação e organização. Revisão completa do FinanceDB. Entregável final: o projeto completo e funcional.
+| # | Título da Aula | Objetivo Principal |
+|---|---|---|
+| 38 | Introdução ao Azure SQL Database | Entender as diferenças entre SQL Server on-premises e Azure SQL |
+| 39 | Migrando o FinanceDB para o Azure SQL | Conectar o SSMS ao Azure e executar scripts no ambiente de nuvem |
+| 40 | Revisão para Certificação — Módulos 1 e 2 | Revisar fundamentos e T-SQL básico com questões estilo certificação |
+| 41 | Revisão para Certificação — Módulos 3, 4 e 5 | Revisar consultas avançadas, objetos e administração com questões práticas |
+| 42 | Projeto Final — FinanceDB Corporativo Completo | Consolidar todo o conhecimento em um banco de dados financeiro profissional |
 
 ---
 
@@ -160,88 +132,258 @@ Logins e usuários no SQL Server. Permissões com `GRANT`, `DENY`, `REVOKE`. Boa
 
 ~~~mermaid
 graph TD
-    A[Aula 1: Conceitos Relacionais] --> B[Aula 2: CREATE DATABASE]
-    B --> C[Aula 3: Tipos de Dados]
-    C --> D[Aula 4: CREATE TABLE]
-    D --> E[Aula 5: INSERT INTO]
-    E --> F[Aula 6: SELECT]
-    F --> G[Aula 7: WHERE]
-    G --> H[Aula 8: ORDER BY e TOP]
-    H --> I[Aula 9: FOREIGN KEY]
-    I --> J[Aula 10: UPDATE e DELETE]
-    J --> K[Aula 11: ALTER TABLE]
-    K --> L[Aula 12: Agregações]
-    L --> M[Aula 13: INNER JOIN]
-    M --> N[Aula 14: LEFT e RIGHT JOIN]
-    N --> O[Aula 15: Subconsultas]
-    O --> P[Aula 16: Funções de Data e Texto]
-    P --> Q[Aula 17: Views]
-    Q --> R[Aula 18: Stored Procedures]
-    R --> S[Aula 19: Variáveis e Fluxo]
-    S --> T[Aula 20: Transações]
-    T --> U[Aula 21: TRY...CATCH]
-    U --> V[Aula 22: UDFs]
-    V --> W[Aula 23: Índices]
-    W --> X[Aula 24: Segurança e Conclusão]
+    M1[MÓDULO 1: Fundamentos e Teoria]
+    M2[MÓDULO 2: T-SQL Básico]
+    M3[MÓDULO 3: Relacionamentos e Consultas]
+    M4[MÓDULO 4: Objetos e Programabilidade]
+    M5[MÓDULO 5: Administração e Performance]
+    M6[MÓDULO 6: Azure e Certificação]
+
+    M1 --> M2
+    M2 --> M3
+    M3 --> M4
+    M4 --> M5
+    M5 --> M6
+
+    M1 --> A1[Aula 1: Modelo Relacional]
+    M1 --> A2[Aula 2: Normalização]
+    M1 --> A3[Aula 3: Arquitetura SQL Server]
+    M1 --> A4[Aula 4: Instalação e Ambiente]
+    M1 --> A5[Aula 5: SSMS Interface]
+    M1 --> A6[Aula 6: Tipos de Dados]
+
+    M2 --> A7[Aula 7: CREATE DATABASE]
+    M2 --> A8[Aula 8: CREATE TABLE]
+    M2 --> A9[Aula 9: PRIMARY KEY e FOREIGN KEY]
+    M2 --> A10[Aula 10: INSERT INTO]
+    M2 --> A11[Aula 11: SELECT]
+    M2 --> A12[Aula 12: WHERE e Filtros]
+    M2 --> A13[Aula 13: ORDER BY e TOP]
+    M2 --> A14[Aula 14: UPDATE e DELETE]
+
+    M3 --> A15[Aula 15: INNER JOIN]
+    M3 --> A16[Aula 16: LEFT RIGHT FULL JOIN]
+    M3 --> A17[Aula 17: SELF JOIN]
+    M3 --> A18[Aula 18: Agregação]
+    M3 --> A19[Aula 19: GROUP BY e HAVING]
+    M3 --> A20[Aula 20: Funções de Data]
+    M3 --> A21[Aula 21: Funções de Texto]
+    M3 --> A22[Aula 22: Subconsultas]
+
+    M4 --> A23[Aula 23: CTEs]
+    M4 --> A24[Aula 24: Window Functions]
+    M4 --> A25[Aula 25: Views]
+    M4 --> A26[Aula 26: Stored Procedures]
+    M4 --> A27[Aula 27: Functions]
+    M4 --> A28[Aula 28: Triggers]
+    M4 --> A29[Aula 29: Transações]
+    M4 --> A30[Aula 30: TRY CATCH]
+
+    M5 --> A31[Aula 31: Segurança]
+    M5 --> A32[Aula 32: Schemas]
+    M5 --> A33[Aula 33: Backup e Restore]
+    M5 --> A34[Aula 34: Índices]
+    M5 --> A35[Aula 35: Execution Plan]
+    M5 --> A36[Aula 36: DMVs e Monitoramento]
+    M5 --> A37[Aula 37: Concorrência e Locks]
+
+    M6 --> A38[Aula 38: Azure SQL]
+    M6 --> A39[Aula 39: Migração para Azure]
+    M6 --> A40[Aula 40: Revisão Módulos 1 e 2]
+    M6 --> A41[Aula 41: Revisão Módulos 3 4 5]
+    M6 --> A42[Aula 42: Projeto Final]
 ~~~
 
 ---
 
-## Estrutura do Repositório / Pasta do Projeto
+## Estrutura de Pastas do Projeto
 
 ~~~text
-FinanceDB/                        ← Pasta raiz do projeto (aberta no VS Code)
-├── README.md                     ← Descrição geral do projeto
-├── plano_mestre.txt              ← Este planejamento salvo como referência
-├── log_estado_projeto.md         ← Log atualizado a cada aula
-├── prompts_individuais.md        ← Prompts prontos para cada aula
-├── .gitignore                    ← Arquivos a ignorar no versionamento
-├── aula_01/
-│   ├── README.md                 ← Resumo da aula e instruções
-│   └── exercicios/
-│       └── exercicio_01.md
-├── aula_02/
-│   ├── README.md
-│   ├── codigo/
-│   │   └── criar_banco.sql      ← Editado no VS Code, executado no SSMS
-│   └── exercicios/
-│       └── exercicio_02.md
-├── aula_03/
-│   └── ...
-└── aula_24/
-    └── ...
+FinanceDB/
+├── README.md
+├── plano_mestre.txt
+├── log_estado_projeto.md
+├── prompts_individuais.md
+├── modulo_01_fundamentos/
+│   ├── aula_01/
+│   │   ├── README.md
+│   │   ├── exercicios/
+│   │   │   └── exercicio_01.sql
+│   │   └── respostas/
+│   │       └── resposta_01.sql
+│   ├── aula_02/
+│   ├── aula_03/
+│   ├── aula_04/
+│   ├── aula_05/
+│   └── aula_06/
+├── modulo_02_essencial/
+│   ├── aula_07/
+│   │   ├── README.md
+│   │   ├── codigo/
+│   │   │   └── criar_banco.sql
+│   │   ├── exercicios/
+│   │   │   └── exercicio_07.sql
+│   │   └── respostas/
+│   │       └── resposta_07.sql
+│   ├── aula_08/ ... aula_14/
+├── modulo_03_proficiente/
+│   ├── aula_15/ ... aula_22/
+├── modulo_04_avancado/
+│   ├── aula_23/ ... aula_30/
+├── modulo_05_especialista/
+│   ├── aula_31/ ... aula_37/
+├── modulo_06_mestre/
+│   ├── aula_38/ ... aula_42/
+│   └── projeto_final/
+│       └── financedb_completo.sql
+└── .gitignore
 ~~~
 
 ---
 
-## Tempo Estimado
-
-| Módulo | Aulas | Tempo de Leitura | Tempo com Prática |
-|---|---|---|---|
-| Módulo 1 — Essencial | 8 aulas | ~4 horas | ~8 horas |
-| Módulo 2 — Proficiente | 8 aulas | ~4 horas | ~10 horas |
-| Módulo 3 — Mestre | 8 aulas | ~4 horas | ~12 horas |
-| **Total** | **24 aulas** | **~12 horas** | **~30 horas** |
-
----
-
-## Log de Estado do Projeto (Inicial)
+## Conteúdo do arquivo README.md
 
 ~~~text
-## Estado Inicial
-- Banco de dados: ❌ Ainda não criado
-- Tabelas: ❌ Ainda não criadas
-- Dados: ❌ Ainda não inseridos
-- Projeto: ⏳ Aguardando início da Aula 1
+# FinanceDB — Sistema de Controle Financeiro Corporativo
+
+## Descrição
+Projeto prático incremental desenvolvido ao longo do curso
+"SQL Server para Aplicações Financeiras com T-SQL".
+Trilha: Desenvolvimento T-SQL + Domínio Completo para Certificação.
+O objetivo é construir, do zero, um banco de dados financeiro
+corporativo real, seguro, otimizado e consultável.
+
+## Tecnologias
+- SQL Server 2022
+- T-SQL
+- SQL Server Management Studio (SSMS)
+- Windows 11
+- Azure SQL Database (Módulo 6)
+
+## Estrutura
+Cada módulo possui uma pasta com as aulas correspondentes.
+Os arquivos .sql contêm o código desenvolvido e comentado linha a linha.
+A pasta exercicios/ contém os desafios de cada aula.
+A pasta respostas/ contém as resoluções comentadas.
+
+## Como Usar
+1. Abra o SSMS e conecte-se à sua instância local do SQL Server.
+2. Navegue até a pasta do módulo e aula correspondente.
+3. Execute o script .sql na ordem indicada.
+4. Consulte o log_estado_projeto.md para acompanhar o progresso.
+
+## Módulos
+- Módulo 1: Fundamentos e Teoria (Aulas 1-6)
+- Módulo 2: T-SQL Básico (Aulas 7-14)
+- Módulo 3: Relacionamentos e Consultas (Aulas 15-22)
+- Módulo 4: Objetos e Programabilidade (Aulas 23-30)
+- Módulo 5: Administração e Performance (Aulas 31-37)
+- Módulo 6: Azure SQL e Certificação (Aulas 38-42)
 ~~~
 
 ---
 
-## Ação Obrigatória — Salve este Plano
+## Conteúdo do arquivo .gitignore
 
-**Por favor, salve o conteúdo deste planejamento em um arquivo chamado `plano_mestre.txt`** na pasta raiz do seu projeto `FinanceDB/`. Abra o VS Code, crie a pasta `FinanceDB/` em um local de sua preferência, e salve o arquivo lá. Este arquivo será a referência central do curso e poderá ser anexado nas próximas sessões para manter o contexto completo.
+~~~text
+# SQL Server
+*.bak
+*.mdf
+*.ldf
+*.trc
+*.xel
 
-Quando estiver pronto, confirme com **"Ok"**, **"Aprovo"** ou **"Pode prosseguir"** e iniciaremos a **Aula 1: O que é um Banco de Dados Relacional e por que o SQL Server?**
+# SSMS
+*.suo
+*.user
+*.ssmssqlproj.bak
+
+# Windows
+Thumbs.db
+desktop.ini
+~~~
+
+---
+
+## Boas Práticas de Versionamento
+
+Ao longo do curso, cada aula deve ser registrada no repositório com um **commit semântico**, seguindo o padrão **Conventional Commits**. Os padrões recomendados são: **feat:** para adição de nova estrutura ou funcionalidade, **fix:** para correção de um script com erro, **docs:** para atualização de README ou log, e **chore:** para tarefas de configuração e organização. Exemplos práticos: `feat: cria banco de dados FinanceDB e tabela Contas` na Aula 7, `feat: adiciona INSERT INTO na tabela Transacoes` na Aula 10, e `docs: atualiza log_estado_projeto aula 12` após cada aula concluída. Ao final de cada módulo, recomenda-se criar uma **tag** de versão para marcar o marco atingido: `v1.0-fundamentos`, `v2.0-essencial`, `v3.0-proficiente`, `v4.0-avancado`, `v5.0-especialista` e `v6.0-mestre`.
+
+---
+
+## Log de Estado Inicial do Projeto
+
+~~~text
+## Estado Inicial — Antes da Aula 1
+- Projeto: FinanceDB
+- Status: Aguardando início
+- Banco de Dados: Não criado
+- Tabelas: Nenhuma
+- Dados: Nenhum
+- Módulo Atual: Módulo 1 — Fundamentos e Teoria
+- Próximas Etapas: Aula 1 apresentará o modelo relacional e a teoria de bancos de dados
+~~~
+
+---
+
+## Apêndice — Referências e Recursos
+
+### Documentação Oficial Microsoft
+
+- **SQL Server 2022 Docs:** https://learn.microsoft.com/pt-br/sql/sql-server/
+- **Referência T-SQL Completa:** https://learn.microsoft.com/pt-br/sql/t-sql/language-reference
+- **SSMS — Documentação:** https://learn.microsoft.com/pt-br/sql/ssms/sql-server-management-studio-ssms
+- **Azure SQL Database:** https://learn.microsoft.com/pt-br/azure/azure-sql/
+
+### Certificações Relacionadas
+
+- **DP-900 — Azure Data Fundamentals:** porta de entrada para dados na Microsoft
+- **DP-300 — Administering Relational Databases on Microsoft Azure:** certificação profissional para DBA
+- **Referência de estudo 70-761 (aposentada, mas amplamente usada):** base de conteúdo T-SQL para desenvolvimento
+- **Microsoft Learn — Trilhas gratuitas:** https://learn.microsoft.com/pt-br/training/
+
+### Livros Recomendados
+
+- **"T-SQL Fundamentals"** — Itzik Ben-Gan (Microsoft Press): referência definitiva para T-SQL
+- **"Learning SQL"** — Alan Beaulieu (O'Reilly): introdução sólida à linguagem SQL
+- **"SQL Server 2022 Query Performance Tuning"** — Grant Fritchey (Apress): para otimização avançada
+- **"Pro SQL Server Administration"** — Peter Carter (Apress): para administração completa
+
+### Comunidades e Fóruns
+
+- **Stack Overflow — tag sql-server:** https://stackoverflow.com/questions/tagged/sql-server
+- **DBA Stack Exchange:** https://dba.stackexchange.com/
+- **Reddit r/SQLServer:** https://www.reddit.com/r/SQLServer/
+- **Microsoft Q&A — SQL Server:** https://learn.microsoft.com/pt-br/answers/tags/191/sql-server
+
+### Ferramentas Recomendadas
+
+- **SQL Server Management Studio (SSMS):** ferramenta principal do curso
+- **Azure Data Studio:** alternativa moderna com suporte a notebooks SQL
+- **dbdiagram.io:** criação visual de diagramas de banco de dados
+- **Git para Windows:** https://git-scm.com/download/win
+
+---
+
+## Tempo Estimado do Curso
+
+- **42 aulas** com aproximadamente **30 a 40 minutos de leitura** cada
+- **Tempo total estimado:** 22 a 28 horas de estudo
+- **Ritmo sugerido:** 3 a 4 aulas por semana, com prática entre as aulas
+- **Duração aproximada:** 10 a 14 semanas
+- **Projeto prático:** construído incrementalmente ao longo de todas as aulas
+
+---
+
+## Instrução para o Aluno
+
+Salve este planejamento como **plano_mestre.txt** na pasta raiz do seu projeto **FinanceDB**. Ele será sua bússola durante todo o curso — sempre que tiver dúvidas sobre onde estamos ou para onde vamos, consulte este arquivo. Ao iniciar cada nova sessão de estudo, anexe este arquivo para garantir que o contexto do curso seja preservado com precisão.
+
+---
+
+## ✅ Planejamento Concluído
+
+O **Mapa da Mina** está pronto. Temos **42 aulas** organizadas em **6 módulos**, cobrindo desde a teoria do modelo relacional até o Azure SQL e a revisão para certificação. O projeto prático incremental **FinanceDB** evolui em todos os módulos, com estrutura de pastas organizada por módulo e aula, boas práticas de versionamento com **Conventional Commits**, apêndice completo de referências e log de estado inicial registrado. Confirme quando estiver pronto e iniciaremos a **Aula 1: O Que é um Banco de Dados Relacional**.
 
 ---
 

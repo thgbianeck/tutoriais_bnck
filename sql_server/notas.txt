@@ -1,9 +1,9 @@
 Tema: SQL Server, para aplicações financeiras com T-SQL.
 Estou usando o windows 11.
-Estou usando o SQL Server Management Studio 21
-A Versão é a 2022 do SQL Server
+Estou usando o SQL Server Management Studio
+A Versão é a 2025 do SQL Server
 Quero que aborde todos os conteúdos, teoria e prática, tenha em mente que o público é iniciante, não coloque scripts muito complexos, com muitas linhas, ou que usem recursos avançados. O foco é ensinar os conceitos básicos e a sintaxe do T-SQL, para que o aluno possa começar a escrever suas próprias consultas e entender como o SQL Server funciona. Não coloque comandos ainda não abordados nos scripts, o conhecimento deverá ser construído passo a passo.
-
+não cite nas aulas geradas os arquivos auxiliares para a geração de prompts ou arquivos que usamos em anexo para construir os conteudos.
 
 O padrão correto que deve ser seguido no documento é este:
 

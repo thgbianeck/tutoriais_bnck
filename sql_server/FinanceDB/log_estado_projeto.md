@@ -1,0 +1,11 @@
+## Log de Estado — Aula 1 {#log-de-estado--aula-1  data-source-line="368"}
+- Projeto: FinanceDB
+- Módulo: 1 — Fundamentos e Teoria
+- Aula: 1 — O Que é um Banco de Dados Relacional
+- Objetivo: Concluído ✅
+- Banco de Dados: Não criado (ambiente será configurado na Aula 4)
+- Tabelas: Não criadas (criação inicia na Aula 7)
+- Dados: Nenhum
+- Entregável da Aula: Esboço conceitual comentado do FinanceDB
+- Estado Funcional: ✅ Fundamentos teóricos compreendidos.
+- Próximas Etapas: Aula 2 — Normalização e Formas Normais

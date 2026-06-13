@@ -1,32 +1,20 @@
-# Aula 2: Teoria dos Bancos de Dados — Normalização e Formas Normais
-## Curso: SQL Server para Aplicações Financeiras com T-SQL
+# Capítulo 2: Teoria dos Bancos de Dados — Normalização e Formas Normais
+
+## Livro: SQL Server para Aplicações Financeiras com T-SQL
+
 ## Módulo 1 — FUNDAMENTOS: Teoria e Ambiente
 
----
+## Resumo do Capítulo Anterior
 
-## Análise de Integridade
-
-✅ Conteúdo verificado: profundidade técnica mantida, linguagem acessível pela Técnica de Feynman, narrativa com mínimo de 2.000 palavras, analogia de ancoragem presente, diagrama Mermaid incluído, glossário técnico completo, antecipação de erros mapeada, desafio de fixação com resolução comentada, log de estado atualizado e prompt de continuidade gerado.
-
----
-
-## Resumo da Aula Anterior
-
-Na **Aula 1** aprendemos que um banco de dados relacional organiza dados em **tabelas** compostas por **linhas** e **colunas**. Entendemos a diferença entre **dado** e **informação**, conhecemos a origem matemática do modelo proposto por **Edgar Codd** em 1970, compreendemos o papel das **chaves primárias** e das **chaves estrangeiras** na identificação e no relacionamento de registros, e conhecemos as propriedades **ACID** que tornam o banco de dados relacional a escolha ideal para sistemas financeiros. Esboçamos também as primeiras entidades do nosso projeto: **Empresas**, **ContasBancarias**, **PlanoDeContas**, **Transacoes** e **Orcamentos**.
-
----
+Na **Capítulo 1** aprendemos que um banco de dados relacional organiza dados em **tabelas** compostas por **linhas** e **colunas**. Entendemos a diferença entre **dado** e **informação**, conhecemos a origem matemática do modelo proposto por **Edgar Codd** em 1970, compreendemos o papel das **chaves primárias** e das **chaves estrangeiras** na identificação e no relacionamento de registros, e conhecemos as propriedades **ACID** que tornam o banco de dados relacional a escolha ideal para sistemas financeiros. Esboçamos também as primeiras entidades do nosso projeto: **Empresas**, **ContasBancarias**, **PlanoDeContas**, **Transacoes** e **Orcamentos**.
 
 ## Objetivo
 
-Compreender o que é a **Normalização** de banco de dados, por que ela existe, quais problemas ela resolve e como aplicar as três primeiras formas normais — **1FN**, **2FN** e **3FN** — no contexto do projeto **FinanceDB**. Ao final desta aula, você será capaz de identificar se uma tabela está ou não normalizada, diagnosticar os problemas que a falta de normalização causa e reestruturar tabelas financeiras de forma tecnicamente correta.
-
----
+Compreender o que é a **Normalização** de banco de dados, por que ela existe, quais problemas ela resolve e como aplicar as três primeiras formas normais — **1FN**, **2FN** e **3FN** — no contexto do projeto **FinanceDB**. Ao final deste Capítulo, você será capaz de identificar se uma tabela está ou não normalizada, diagnosticar os problemas que a falta de normalização causa e reestruturar tabelas financeiras de forma tecnicamente correta.
 
 ## Pré-requisitos
 
-**Aula 1 concluída.** É necessário compreender os conceitos de tabela, linha, coluna, chave primária e chave estrangeira.
-
----
+**Capítulo 1 concluído.** É necessário compreender os conceitos de tabela, linha, coluna, chave primária e chave estrangeira.
 
 ## Teoria Detalhada
 
@@ -208,7 +196,7 @@ Com as três formas normais aplicadas, o modelo do **FinanceDB** começa a tomar
 -- ============================================================
 -- ESBOÇO NORMALIZADO DO FINANCEDB — APÓS 1FN, 2FN E 3FN
 -- Este é o mapa conceitual que guiará a criação das tabelas
--- nas aulas 7, 8 e 9. Por ora, são apenas comentários explicativos.
+-- nas Capítulos 7, 8 e 9. Por ora, são apenas comentários explicativos.
 -- ============================================================
 
 -- TABELA: Empresas
@@ -234,7 +222,7 @@ Com as três formas normais aplicadas, o modelo do **FinanceDB** começa a tomar
 -- Categorias contábeis para classificar as transações.
 -- Chave primária: id_plano
 -- Colunas: id_plano, codigo, descricao, tipo ('R' ou 'D'),
---          id_plano_pai (para hierarquia de contas — SELF JOIN na Aula 17)
+--          id_plano_pai (para hierarquia de contas — SELF JOIN no Capítulo 17)
 
 -- TABELA: Transacoes
 -- Cada lançamento financeiro do sistema.
@@ -260,8 +248,6 @@ Com as três formas normais aplicadas, o modelo do **FinanceDB** começa a tomar
 
 No contexto do **FinanceDB**, que é um sistema **OLTP** (Online Transaction Processing — processamento transacional online), a normalização completa até a 3FN é a abordagem correta. Sistemas OLTP priorizam **consistência** e **velocidade de escrita**, enquanto sistemas **OLAP** (Online Analytical Processing) priorizam **velocidade de leitura**. Essa distinção será retomada no **Módulo 5**, quando estudarmos performance e o **Azure SQL** no Módulo 6.
 
----
-
 ## Analogia de Ancoragem
 
 Pense em um escritório de contabilidade que guarda documentos físicos. No começo, sem organização, tudo vai para uma única caixa enorme: contratos, notas fiscais, extratos bancários, dados de clientes — tudo misturado. Quando precisam encontrar o endereço atualizado de um cliente, precisam revirar a caixa inteira e ainda correm o risco de encontrar dois endereços diferentes para o mesmo cliente em documentos distintos.
@@ -269,8 +255,6 @@ Pense em um escritório de contabilidade que guarda documentos físicos. No come
 A **normalização** é o equivalente a criar um arquivo organizado com gavetas separadas: uma gaveta para **clientes**, uma para **bancos**, uma para **categorias contábeis** e uma para **lançamentos**. Cada documento vai para a gaveta certa, sem repetição. Se o endereço de um cliente muda, você atualiza em um único lugar — na ficha do cliente na gaveta de clientes — e todos os documentos que referenciam aquele cliente automaticamente refletem a informação correta, porque apontam para a mesma ficha.
 
 A **1FN** é a regra de que cada documento deve conter apenas uma informação por campo — sem listas, sem valores misturados. A **2FN** é a regra de que cada informação deve estar na gaveta correta, não espalhada entre gavetas que não são as suas. A **3FN** é a regra de que as informações dentro de uma gaveta devem se referir diretamente ao dono da gaveta — não a outros documentos dentro da mesma gaveta.
-
----
 
 ## Diagrama Mermaid
 
@@ -339,17 +323,15 @@ erDiagram
     Empresas ||--o{ Transacoes : "pertence"
 ~~~
 
----
-
 ## Aplicação no Projeto Prático
 
-Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados será criado na **Aula 7**. O entregável desta aula é o **modelo conceitual normalizado** documentado em um arquivo de comentários SQL, que servirá como planta arquitetônica para todas as criações de tabelas que virão a seguir.
+Nesto Capítulo ainda não executaremos código T-SQL no SSMS — o banco de dados será criado na **Capítulo 7**. O entregável deste Capítulo é o **modelo conceitual normalizado** documentado em um arquivo de comentários SQL, que servirá como planta arquitetônica para todas as criações de tabelas que virão a seguir.
 
 ~~~sql
 -- ============================================================
--- ARQUIVO: modulo_01_fundamentos/aula_02/modelo_conceitual.sql
+-- ARQUIVO: modulo_01_fundamentos/Capítulo_02/modelo_conceitual.sql
 -- PROJETO: FinanceDB — Sistema de Controle Financeiro Corporativo
--- AULA: 2 — Normalização e Formas Normais
+-- Capítulo: 2 — Normalização e Formas Normais
 -- OBJETIVO: Documentar o modelo conceitual normalizado do FinanceDB
 --           Este arquivo é a planta arquitetônica do banco de dados.
 --           Nenhum comando será executado aqui — apenas documentação.
@@ -400,7 +382,7 @@ Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados se
 -- Forma Normal: 3FN ✅
 -- Justificativa: cada atributo descreve diretamente a conta
 --   contábil. id_plano_pai permite hierarquia de contas
---   (SELF JOIN), estudado na Aula 17.
+--   (SELF JOIN), estudado no Capítulo 17.
 -- ============================================================
 -- id_plano         INT           → chave primária
 -- codigo           VARCHAR(20)   → código contábil (ex: '1.1.1')
@@ -469,12 +451,10 @@ Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados se
 --     1.1.1. Vendas de Produtos
 -- O campo id_plano_pai referencia a própria tabela (SELF JOIN),
 -- permitindo representar essa hierarquia sem tabelas adicionais.
--- Estudaremos SELF JOIN em detalhes na Aula 17.
+-- Estudaremos SELF JOIN em detalhes no Capítulo 17.
 ~~~
 
----
-
-## Glossário Técnico da Aula
+## Glossário Técnico do Capítulo
 
 **Normalização:** processo de organizar tabelas e colunas de um banco de dados para reduzir redundância e garantir integridade dos dados, aplicado progressivamente por meio de formas normais.
 
@@ -508,19 +488,15 @@ Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados se
 
 **Modelo Conceitual:** representação das entidades, atributos e relacionamentos de um sistema, independente da implementação técnica. É a planta do banco de dados.
 
----
-
 ## Antecipação de Erros
 
-**Erro 1 — Confundir atomicidade de dados com atomicidade do ACID:** a atomicidade da 1FN se refere à indivisibilidade de um valor em uma coluna. A atomicidade do ACID (vista na Aula 1) se refere à indivisibilidade de uma transação como um todo. São conceitos distintos que compartilham o mesmo nome.
+**Erro 1 — Confundir atomicidade de dados com atomicidade do ACID:** a atomicidade da 1FN se refere à indivisibilidade de um valor em uma coluna. A atomicidade do ACID (vista no Capítulo 1) se refere à indivisibilidade de uma transação como um todo. São conceitos distintos que compartilham o mesmo nome.
 
 **Erro 2 — Aplicar 2FN em tabelas com chave simples:** a Segunda Forma Normal só é relevante quando a chave primária é composta. Se a tabela tem uma chave primária de uma única coluna e já está na 1FN, ela automaticamente satisfaz a 2FN. Muitos iniciantes passam tempo analisando dependências parciais em tabelas com chave simples — esforço desnecessário.
 
 **Erro 3 — Normalizar demais (over-normalization):** é possível levar a normalização além do necessário, fragmentando tabelas a ponto de exigir dezenas de JOINs para consultas simples. A 3FN é o ponto de equilíbrio ideal para sistemas OLTP como o FinanceDB. As formas normais superiores (FNBC, 4FN, 5FN) raramente são necessárias na prática do desenvolvimento financeiro.
 
 **Erro 4 — Não documentar as decisões de design:** cada decisão de normalização que você toma tem uma razão técnica. Se você não documenta essas razões (como fizemos nos comentários do modelo conceitual), outro desenvolvedor — ou você mesmo daqui a seis meses — não saberá por que a tabela foi estruturada daquele jeito e poderá desfazer decisões corretas sem perceber.
-
----
 
 ## Troubleshooting
 
@@ -529,8 +505,6 @@ Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados se
 **"Não consigo identificar dependências transitivas":** trace o caminho das dependências. Comece pela chave primária e pergunte: "este atributo depende diretamente da chave, ou depende de outro atributo que por sua vez depende da chave?" Se você encontrar um intermediário no caminho, há uma dependência transitiva. No exemplo do FinanceDB: `id_conta → id_banco → nome_banco`. O `nome_banco` não depende de `id_conta` diretamente — ele depende de `id_banco`, que depende de `id_conta`. Isso é transitivo.
 
 **"Meu modelo ficou com muitas tabelas — normalizei demais?":** no FinanceDB, chegamos a 6 tabelas para um sistema financeiro completo. Isso é adequado. Se você se encontrar com 20 tabelas para um sistema simples, revise se não está separando atributos que naturalmente pertencem à mesma entidade.
-
----
 
 ## Desafio de Fixação
 
@@ -547,8 +521,6 @@ Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados se
 -- 2              | 2026-02-15 | 1200.00 | 'Fornec. C'               | 5            | 'Serviços TI'  | 1          | 'Tech Fin Ltda' | '12.345.678/0001-99'
 -- 3              | 2026-02-20 | 800.00  | 'Fornec. A'               | 6            | 'Material'     | 2          | 'Finance Corp'  | '98.765.432/0001-11'
 ~~~
-
----
 
 ## Resolução Comentada
 
@@ -617,32 +589,26 @@ Nesta aula ainda não executaremos código T-SQL no SSMS — o banco de dados se
 --         nome_empresa, cnpj_empresa → tabela Empresas
 ~~~
 
----
-
 ## Resumo dos Pontos-Chave
 
-A **Normalização** é o processo de organizar tabelas para eliminar **redundância** e evitar **anomalias de inserção, atualização e exclusão**. A **1FN** exige que todos os valores sejam **atômicos** e que cada linha tenha uma **chave primária**. A **2FN** elimina **dependências parciais** em chaves compostas. A **3FN** elimina **dependências transitivas** entre atributos não-chave. Para sistemas **OLTP** como o **FinanceDB**, a normalização até a **3FN** é a abordagem correta e suficiente. O modelo conceitual normalizado do FinanceDB possui **6 entidades**: **Empresas**, **Bancos**, **ContasBancarias**, **PlanoDeContas**, **Transacoes** e **Orcamentos** — todas na 3FN, prontas para serem implementadas em T-SQL a partir da Aula 7.
-
----
+A **Normalização** é o processo de organizar tabelas para eliminar **redundância** e evitar **anomalias de inserção, atualização e exclusão**. A **1FN** exige que todos os valores sejam **atômicos** e que cada linha tenha uma **chave primária**. A **2FN** elimina **dependências parciais** em chaves compostas. A **3FN** elimina **dependências transitivas** entre atributos não-chave. Para sistemas **OLTP** como o **FinanceDB**, a normalização até a **3FN** é a abordagem correta e suficiente. O modelo conceitual normalizado do FinanceDB possui **6 entidades**: **Empresas**, **Bancos**, **ContasBancarias**, **PlanoDeContas**, **Transacoes** e **Orcamentos** — todas na 3FN, prontas para serem implementadas em T-SQL a partir do Capítulo 7.
 
 ## Próximos Passos
 
-Na próxima aula, mergulharemos dentro do próprio SQL Server para entender como ele funciona internamente: como processa uma query, como gerencia a memória com o **Buffer Pool**, como o **Transaction Log** garante a durabilidade dos dados e quais são os componentes principais da arquitetura — **Storage Engine**, **Query Processor** e **SQLOS**. Esse conhecimento é essencial tanto para escrever T-SQL eficiente quanto para a certificação.
-
----
+Na próximo Capítulo, mergulharemos dentro do próprio SQL Server para entender como ele funciona internamente: como processa uma query, como gerencia a memória com o **Buffer Pool**, como o **Transaction Log** garante a durabilidade dos dados e quais são os componentes principais da arquitetura — **Storage Engine**, **Query Processor** e **SQLOS**. Esse conhecimento é essencial tanto para escrever T-SQL eficiente quanto para a certificação.
 
 ## Log de Estado do Projeto
 
 ~~~text
-## Log de Estado — Aula 2
+## Log de Estado — Capítulo 2
 - Projeto: FinanceDB
 - Módulo: 1 — Fundamentos e Teoria
-- Aula: 2 — Normalização e Formas Normais
+- Capítulo: 2 — Normalização e Formas Normais
 - Objetivo: Concluído ✅
-- Banco de Dados: Não criado (Aula 7)
-- Tabelas: Não criadas (Aula 7 e 8)
+- Banco de Dados: Não criado (Capítulo 7)
+- Tabelas: Não criadas (Capítulo 7 e 8)
 - Dados: Nenhum
-- Entregável da Aula: modelo_conceitual.sql com 6 entidades
+- Entregável do Capítulo: modelo_conceitual.sql com 6 entidades
   normalizadas até a 3FN e decisões de design documentadas
 - Entidades Definidas:
     ✅ Empresas
@@ -652,23 +618,21 @@ Na próxima aula, mergulharemos dentro do próprio SQL Server para entender como
     ✅ Transacoes
     ✅ Orcamentos
 - Estado Funcional: ✅ Modelo conceitual normalizado e documentado.
-- Próximas Etapas: Aula 3 — Arquitetura interna do SQL Server
+- Próximas Etapas: Capítulo 3 — Arquitetura interna do SQL Server
 ~~~
 
----
-
-## Prompt de Continuidade para a Aula 3
+## Prompt de Continuidade para o Capítulo 3
 
 ~~~text
-Contexto: Estou estudando o curso "SQL Server para Aplicações
+Contexto: Estou estudando o Livro "SQL Server para Aplicações
 Financeiras com T-SQL". Meu ambiente é Windows 11, SSMS,
 SQL Server 2022. O projeto prático incremental se chama FinanceDB.
 
-Concluí a Aula 2, que cobriu Normalização e Formas Normais.
+Concluí o Capítulo 2, que cobriu Normalização e Formas Normais.
 O modelo conceitual normalizado do FinanceDB está definido
 com 6 entidades na 3FN: Empresas, Bancos, ContasBancarias,
 PlanoDeContas, Transacoes e Orcamentos. O arquivo
-modelo_conceitual.sql foi criado em modulo_01_fundamentos/aula_02/.
+modelo_conceitual.sql foi criado em modulo_01_fundamentos/Capítulo_02/.
 
 Siga rigorosamente o Prompt Mestre v1.1: narrativa densa com
 mínimo de 2.000 palavras, Técnica de Feynman, analogia de
@@ -676,18 +640,16 @@ ancoragem, diagrama Mermaid escapado com ~~~mermaid, código SQL
 comentado linha a linha escapado com ~~~, glossário técnico,
 antecipação de erros, troubleshooting, desafio de fixação com
 resolução comentada, resumo dos pontos-chave, log de estado do
-projeto atualizado e prompt de continuidade para a próxima aula.
+projeto atualizado e prompt de continuidade para a próximo Capítulo.
 Todo o conteúdo deve ser gerado dentro de um bloco ```markdown.
 
-Por favor, gere a Aula 3: O SQL Server por Dentro — Arquitetura
+Por favor, gere o Capítulo 3: O SQL Server por Dentro — Arquitetura
 e Componentes. Objetivo: entender como o SQL Server processa
 queries internamente, como gerencia memória com o Buffer Pool,
 como funciona o Transaction Log, quais são os componentes
 principais (Storage Engine, Query Processor, SQLOS) e como essa
 arquitetura impacta o desempenho e a confiabilidade do FinanceDB.
-Pré-requisito: Aulas 1 e 2 concluídas.
+Pré-requisito: Capítulos 1 e 2 concluídas.
 ~~~
 
----
-
-Dúvidas? Posso prosseguir para a Aula 3?
+Dúvidas? Posso prosseguir para o Capítulo 3?

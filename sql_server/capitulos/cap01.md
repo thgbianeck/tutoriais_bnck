@@ -1,32 +1,11 @@
-# Aula 1: O Que é um Banco de Dados Relacional
-## Curso: SQL Server para Aplicações Financeiras com T-SQL
-## Módulo 1 — FUNDAMENTOS: Teoria e Ambiente
+# Capítulo 1: O Que é um Banco de Dados Relacional
 
----
+**Livro:** SQL Server para Aplicações Financeiras com T-SQL
+**Módulo:** 1 — FUNDAMENTOS: Teoria e Ambiente
 
-## Análise de Integridade
+## Objetivo do Capítulo
 
-✅ Conteúdo verificado: profundidade técnica mantida, linguagem acessível pela Técnica de Feynman, narrativa com mínimo de 2.000 palavras, analogia de ancoragem presente, diagrama Mermaid incluído, glossário técnico completo, antecipação de erros mapeada, desafio de fixação com resolução comentada, log de estado atualizado e prompt de continuidade gerado.
-
----
-
-## Resumo da Aula Anterior
-
-Não há aula anterior. Esta é a primeira aula do curso. Bem-vindo ao **FinanceDB**.
-
----
-
-## Objetivo
-
-Compreender o que é um banco de dados relacional, como ele organiza a informação em tabelas, linhas e colunas, qual é a diferença entre dado e informação, e por que o modelo relacional se tornou o padrão dominante para sistemas financeiros no mundo inteiro. Ao final desta aula, você terá uma visão clara e sólida dos fundamentos teóricos que sustentam tudo o que será construído ao longo do curso.
-
----
-
-## Pré-requisitos
-
-Nenhum. Este é o ponto de partida absoluto do curso.
-
----
+Compreender o que é um banco de dados relacional, como ele organiza a informação em tabelas, linhas e colunas, qual é a diferença entre dado e informação, e por que o modelo relacional se tornou o padrão dominante para sistemas financeiros no mundo inteiro. Ao final deste Capítulo, você terá uma visão clara e sólida dos fundamentos teóricos que sustentam tudo o que será construído ao longo do livro.
 
 ## Teoria Detalhada
 
@@ -94,23 +73,21 @@ Essas quatro propriedades fazem do banco de dados relacional a escolha natural �
 
 O **SQL Server** é a implementação da Microsoft do modelo relacional de Codd. Lançado em 1989 em parceria com a Sybase, o SQL Server evoluiu ao longo de décadas para se tornar uma das plataformas de banco de dados mais utilizadas no mundo corporativo, especialmente em ambientes Windows e no ecossistema Microsoft Azure.
 
-O SQL Server implementa a linguagem **T-SQL** — **Transact-SQL** — que é a extensão proprietária da Microsoft para o padrão ANSI SQL. O T-SQL adiciona ao SQL padrão uma série de recursos de programação procedural, como variáveis, estruturas de controle de fluxo, tratamento de erros e blocos de transação. É com o T-SQL que construiremos todo o projeto **FinanceDB** ao longo deste curso.
+O SQL Server implementa a linguagem **T-SQL** — **Transact-SQL** — que é a extensão proprietária da Microsoft para o padrão ANSI SQL. O T-SQL adiciona ao SQL padrão uma série de recursos de programação procedural, como variáveis, estruturas de controle de fluxo, tratamento de erros e blocos de transação. É com o T-SQL que construiremos todo o projeto **FinanceDB** ao longo deste livro.
 
 O SQL Server organiza os dados em **bancos de dados** — containers lógicos que agrupam tabelas, views, procedures e outros objetos relacionados. Um servidor SQL Server pode hospedar dezenas ou centenas de bancos de dados diferentes, cada um completamente isolado dos outros. Nosso banco de dados **FinanceDB** será um desses containers — uma unidade coesa e independente que encapsulará todo o sistema financeiro que construiremos juntos.
 
 ### A diferença entre dado estruturado, semiestruturado e não estruturado
 
-Para completar a teoria desta aula, é importante entender onde o modelo relacional se posiciona no espectro mais amplo do armazenamento de dados.
+Para completar a teoria deste Capítulo, é importante entender onde o modelo relacional se posiciona no espectro mais amplo do armazenamento de dados.
 
 **Dado estruturado** é o que o banco de dados relacional gerencia. É dado com esquema definido: cada coluna tem um nome, um tipo e regras de validação. Uma tabela `Transacoes` com colunas `id INTEGER`, `valor DECIMAL(18,2)` e `data DATE` é dado estruturado. A estrutura é conhecida antes dos dados existirem.
 
-**Dado semiestruturado** é dado que tem alguma organização interna, mas não segue um esquema rígido. JSON e XML são exemplos. O SQL Server 2022 suporta armazenamento e consulta de JSON nativamente, o que é relevante para integrações com APIs financeiras modernas.
+**Dado semiestruturado** é dado que tem alguma organização interna, mas não segue um esquema rígido. JSON e XML são exemplos. O SQL Server suporta armazenamento e consulta de JSON nativamente, o que é relevante para integrações com APIs financeiras modernas.
 
 **Dado não estruturado** é dado sem esquema definido: documentos de texto livre, imagens, áudios, vídeos. Bancos de dados relacionais não são o lugar ideal para armazenar esses dados diretamente, embora o SQL Server permita armazenar referências a arquivos externos.
 
 Para aplicações financeiras, a grande maioria dos dados é **estruturada** — valores, datas, contas, categorias, centros de custo. Por isso, o modelo relacional é a escolha ideal e continuará sendo a fundação do nosso projeto **FinanceDB**.
-
----
 
 ## Analogia de Ancoragem
 
@@ -124,9 +101,7 @@ O número de protocolo único em cada pasta — aquele número que nunca se repe
 
 O **SQL** é o funcionário especialista que sabe exatamente onde buscar, como combinar documentos de gavetas diferentes e como apresentar o resultado de forma organizada — tudo isso em frações de segundo, independentemente de quantas pastas existam no escritório.
 
----
-
-## Diagrama Mermaid
+## Diagrama
 
 ~~~mermaid
 graph LR
@@ -173,11 +148,9 @@ graph TD
     end
 ~~~
 
----
-
 ## Aplicação no Projeto Prático
 
-Nesta aula, ainda não escreveremos código T-SQL — o ambiente será configurado nas Aulas 4 e 5. Mas vamos esboçar em papel (ou em comentários SQL) a estrutura conceitual do **FinanceDB** que começaremos a construir na Aula 7.
+Neste Capítulo, ainda não escreveremos código T-SQL — o ambiente será configurado nas Capítulos 4 e 5. Mas vamos esboçar em papel (ou em comentários SQL) a estrutura conceitual do **FinanceDB** que começaremos a construir no Capítulo 7.
 
 ~~~sql
 -- ============================================================
@@ -245,9 +218,7 @@ Nesta aula, ainda não escreveremos código T-SQL — o ambiente será configura
 --   valor_previsto → valor orçado para o período
 ~~~
 
----
-
-## Glossário Técnico da Aula
+## Glossário Técnico do Capítulo
 
 **Banco de Dados Relacional:** sistema de gerenciamento de dados que organiza informações em tabelas (relações) baseadas na teoria matemática dos conjuntos e na álgebra relacional, proposta por Edgar Codd em 1970.
 
@@ -273,8 +244,6 @@ Nesta aula, ainda não escreveremos código T-SQL — o ambiente será configura
 
 **Esquema (Schema):** a definição estrutural de um banco de dados — o conjunto de tabelas, colunas, tipos de dados, constraints e relacionamentos que descrevem como os dados estão organizados.
 
----
-
 ## Antecipação de Erros
 
 **Confundir banco de dados com planilha:** é muito comum para quem vem do Excel imaginar que uma tabela SQL é apenas uma planilha mais sofisticada. A diferença fundamental é que uma planilha não impõe tipos de dados, não garante unicidade, não valida relacionamentos e não controla acesso concorrente. Um banco de dados relacional faz tudo isso de forma automática e obrigatória.
@@ -285,23 +254,17 @@ Nesta aula, ainda não escreveremos código T-SQL — o ambiente será configura
 
 **Subestimar a importância da chave primária:** alguns iniciantes tentam criar tabelas sem chave primária para "simplificar". Isso é um erro grave em qualquer sistema, especialmente em sistemas financeiros. Sem chave primária, é impossível identificar um registro específico com segurança, o que compromete atualizações, exclusões e relacionamentos.
 
----
-
 ## Troubleshooting
 
-Nesta aula teórica, não há código para executar. Mas dois problemas conceituais são recorrentes neste ponto do aprendizado e vale antecipar.
+Neste Capítulo teórica, não há código para executar. Mas dois problemas conceituais são recorrentes neste ponto do aprendizado e vale antecipar.
 
 **"Não consigo visualizar a diferença entre dados e esquema":** o esquema é o projeto arquitetônico — as plantas da construção. Os dados são a construção em si. Você define o esquema (as colunas, os tipos, as regras) uma vez; depois, os dados vão preenchendo as linhas ao longo do tempo. Em T-SQL, `CREATE TABLE` define o esquema; `INSERT INTO` adiciona dados.
 
 **"Não sei como começar a pensar em tabelas para um problema real":** comece pelas entidades do mundo real que você precisa rastrear. Em um sistema financeiro, as entidades são: empresa, conta bancária, categoria contábil, transação, orçamento. Cada entidade vira uma tabela. Os atributos de cada entidade (nome, valor, data) viram as colunas. Os relacionamentos entre entidades viram as chaves estrangeiras.
 
----
-
 ## Desafio de Fixação
 
-**Desafio:** Considerando um sistema financeiro simples para controle de despesas pessoais (não corporativo), identifique pelo menos **4 entidades** que precisariam de tabelas próprias, liste **3 colunas** para cada uma e identifique **2 relacionamentos** entre essas tabelas. Escreva sua resposta em forma de esboço comentado, usando o mesmo formato de comentários SQL apresentado na seção "Aplicação no Projeto Prático" desta aula.
-
----
+**Desafio:** Considerando um sistema financeiro simples para controle de despesas pessoais (não corporativo), identifique pelo menos **4 entidades** que precisariam de tabelas próprias, liste **3 colunas** para cada uma e identifique **2 relacionamentos** entre essas tabelas. Escreva sua resposta em forma de esboço comentado, usando o mesmo formato de comentários SQL apresentado na seção "Aplicação no Projeto Prático" deste Capítulo.
 
 ## Resolução Comentada
 
@@ -348,65 +311,26 @@ Nesta aula teórica, não há código para executar. Mas dois problemas conceitu
 --   Um lançamento pertence a uma única conta.
 ~~~
 
----
-
 ## Resumo dos Pontos-Chave
 
-O **modelo relacional** foi proposto por **Edgar Codd** em 1970 e organiza dados em **tabelas** (relações) compostas por **linhas** (registros) e **colunas** (atributos). A **chave primária** identifica cada linha de forma única, enquanto a **chave estrangeira** cria relacionamentos entre tabelas sem duplicar dados. As propriedades **ACID** (Atomicidade, Consistência, Isolamento e Durabilidade) tornam o banco de dados relacional a escolha ideal para sistemas financeiros. O **SQL Server** da Microsoft implementa o modelo relacional com a linguagem **T-SQL**, que estenderemos ao longo de todo o curso para construir o projeto **FinanceDB**.
-
----
+O **modelo relacional** foi proposto por **Edgar Codd** em 1970 e organiza dados em **tabelas** (relações) compostas por **linhas** (registros) e **colunas** (atributos). A **chave primária** identifica cada linha de forma única, enquanto a **chave estrangeira** cria relacionamentos entre tabelas sem duplicar dados. As propriedades **ACID** (Atomicidade, Consistência, Isolamento e Durabilidade) tornam o banco de dados relacional a escolha ideal para sistemas financeiros. O **SQL Server** da Microsoft implementa o modelo relacional com a linguagem **T-SQL**, que estenderemos ao longo de todo o livro para construir o projeto **FinanceDB**.
 
 ## Próximos Passos
 
-Na próxima aula, aprofundaremos a teoria dos bancos de dados com um tema essencial para qualquer sistema financeiro bem projetado: a **Normalização** e as **Formas Normais**. Entenderemos por que uma tabela mal projetada causa duplicidade de dados, inconsistências e dificuldade de manutenção — e como as regras de normalização eliminam esses problemas antes mesmo de escrever a primeira linha de T-SQL.
-
----
+No próximo Capítulo, aprofundaremos a teoria dos bancos de dados com um tema essencial para qualquer sistema financeiro bem projetado: a **Normalização** e as **Formas Normais**. Entenderemos por que uma tabela mal projetada causa duplicidade de dados, inconsistências e dificuldade de manutenção — e como as regras de normalização eliminam esses problemas antes mesmo de escrever a primeira linha de T-SQL.
 
 ## Log de Estado do Projeto
 
 ~~~text
-## Log de Estado — Aula 1
+## Log de Estado — Capítulo 1
 - Projeto: FinanceDB
 - Módulo: 1 — Fundamentos e Teoria
-- Aula: 1 — O Que é um Banco de Dados Relacional
+- Capítulo: 1 — O Que é um Banco de Dados Relacional
 - Objetivo: Concluído ✅
-- Banco de Dados: Não criado (ambiente será configurado na Aula 4)
-- Tabelas: Não criadas (criação inicia na Aula 7)
+- Banco de Dados: Não criado (ambiente será configurado no Capítulo 4)
+- Tabelas: Não criadas (criação inicia no Capítulo 7)
 - Dados: Nenhum
-- Entregável da Aula: Esboço conceitual comentado do FinanceDB
+- Entregável do Capítulo: Esboço conceitual comentado do FinanceDB
 - Estado Funcional: ✅ Fundamentos teóricos compreendidos.
-- Próximas Etapas: Aula 2 — Normalização e Formas Normais
+- Próximas Etapas: Capítulo 2 — Normalização e Formas Normais
 ~~~
-
----
-
-## Prompt de Continuidade para a Aula 2
-
-~~~text
-Contexto: Estou estudando o curso "SQL Server para Aplicações Financeiras com T-SQL".
-Meu ambiente é Windows 11, SSMS, SQL Server 2022.
-O projeto prático incremental se chama FinanceDB.
-Concluí a Aula 1, que cobriu o modelo relacional, tabelas, linhas, colunas,
-chaves primárias, chaves estrangeiras e as propriedades ACID.
-O esboço conceitual do FinanceDB foi definido com as entidades:
-Empresas, ContasBancarias, PlanoDeContas, Transacoes e Orcamentos.
-
-Siga rigorosamente o Prompt Mestre v1.1: narrativa densa com mínimo de 2.000
-palavras, Técnica de Feynman, analogia de ancoragem, diagrama Mermaid escapado
-com ~~~mermaid, código SQL comentado linha a linha escapado com ~~~, glossário
-técnico, antecipação de erros, troubleshooting, desafio de fixação com resolução
-comentada, resumo dos pontos-chave, log de estado do projeto atualizado e prompt
-de continuidade para a próxima aula.
-Todo o conteúdo deve ser gerado dentro de um bloco ```markdown.
-
-Por favor, gere a Aula 2: Teoria dos Bancos de Dados — Normalização e Formas Normais.
-Objetivo: compreender 1FN, 2FN e 3FN com exemplos financeiros práticos extraídos
-do esboço do FinanceDB, entendendo por que a normalização é essencial para um
-banco de dados financeiro bem estruturado e como ela elimina redundância,
-inconsistência e anomalias de atualização.
-Pré-requisito: Aula 1 concluída.
-~~~
-
----
-
-Dúvidas? Posso prosseguir para a Aula 2?
