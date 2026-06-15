@@ -259,6 +259,10 @@ A **1FN** é a regra de que cada documento deve conter apenas uma informação p
 ## Diagrama Mermaid
 
 ~~~mermaid
+---
+config:
+  theme: redux-color
+---
 erDiagram
     Empresas {
         int id_empresa PK
