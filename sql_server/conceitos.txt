@@ -1,0 +1,75 @@
+1. Bancos (Tabela Bancos)
+
+Conceito: A tabela Bancos é o cadastro das instituições financeiras. Ela guarda informações básicas sobre cada banco, como o nome, um código de identificação (COMPE) e se ele está ativo ou não.
+
+Analogia: Pense nos Bancos como a lista telefônica das instituições financeiras. Se você precisa ligar para o "Banco do Brasil" ou "Itaú", você consulta essa lista para encontrar o nome e o código de cada um. Essa lista não contém seu dinheiro, nem suas contas, apenas os dados de contato e identificação dos bancos em si.
+
+Relacionamento: Os Bancos se relacionam com as ContasBancarias. Uma conta bancária pertence a um banco específico.
+
+2. Empresas (Tabela Empresas)
+
+Conceito: A tabela Empresas registra as diferentes entidades ou filiais do seu grupo que você deseja gerenciar financeiramente. Cada empresa tem seu próprio CNPJ, razão social, nome fantasia, etc.
+
+Analogia: Imagine as Empresas como as pastas organizadoras em um arquivo. Cada pasta representa uma empresa diferente (ex: "Empresa A", "Empresa B"). Dentro de cada pasta, você vai guardar documentos e informações específicas daquela empresa.
+
+Relacionamento: As Empresas são o coração do seu sistema. Elas se relacionam com quase todas as outras tabelas: ContasBancarias (uma conta pertence a uma empresa), PlanoDeContas (cada empresa pode ter seu próprio plano de contas), Orcamentos (os orçamentos são feitos por empresa) e Transacoes (cada transação é realizada por uma empresa).
+
+3. Contas Bancárias (Tabela ContasBancarias)
+
+Conceito: A tabela ContasBancarias detalha as contas que cada Empresa possui em cada Banco. Aqui você encontra o número da agência, o número da conta, o tipo (corrente, poupança) e o saldo inicial.
+
+Analogia: Se os Bancos são a lista telefônica e as Empresas são as pastas, as ContasBancarias são os talonários de cheques ou cartões de débito que estão dentro de cada pasta da empresa, e que pertencem a um banco específico. Cada talonário/cartão representa uma conta real onde o dinheiro daquela empresa está guardado em um determinado banco.
+
+Relacionamento: Uma ContaBancaria está ligada a uma Empresa (quem é a dona da conta) e a um Banco (onde a conta está aberta). As Transacoes ocorrem nessas contas bancárias.
+
+4. Tipos de Transação (Tabela TiposTransacao)
+
+Conceito: Esta tabela categoriza as movimentações financeiras em termos de sua natureza mais básica: se é uma RECEITA (entra dinheiro), DESPESA (sai dinheiro) ou TRANSF (transferência entre contas). Ela define se a transação é de crédito (C) ou débito (D).
+
+Analogia: Pense nos TiposTransacao como os carimbos "Entrada", "Saída" ou "Transferência" que você usa para marcar um documento. Eles dão a primeira e mais fundamental classificação de um evento financeiro.
+
+Relacionamento: Cada Transacao precisa ter um TipoTransacaoID para indicar se ela é uma receita, despesa ou transferência.
+
+5. Plano de Contas (Tabela PlanoDeContas)
+
+Conceito: O PlanoDeContas é uma estrutura hierárquica que organiza todas as categorias financeiras de uma Empresa. Ele permite classificar detalhadamente cada receita e despesa (ex: "Receitas Operacionais", "Salários", "Aluguel", "Material de Escritório"). Ele pode ter vários níveis (ex: 1. Receitas, 1.1. Receitas de Vendas, 1.1.01. Venda de Produtos).
+
+Analogia: O PlanoDeContas é como o índice de um livro de contabilidade, ou a estrutura de pastas e subpastas no seu computador para organizar seus documentos financeiros. Em vez de jogar tudo em uma pasta "Despesas", você cria "Despesas > Aluguel", "Despesas > Salários", "Despesas > Marketing". Essa organização permite uma análise muito mais granular. A hierarquia (ContaPaiID) permite que você veja o total de "Despesas" e também o detalhe de "Aluguel".
+
+Relacionamento: Cada Empresa tem seu PlanoDeContas. Cada Transacao é classificada por uma ContaPlanoID. Os Orcamentos também são definidos para uma ContaPlanoID específica.
+
+6. Orçamentos (Tabela Orcamentos)
+
+Conceito: A tabela Orcamentos armazena o planejamento financeiro de uma Empresa para uma ContaPlanoID específica em um determinado Ano e Mes. Ela registra o ValorOrcado (o que foi planejado) e o ValorRealizado (o que de fato aconteceu).
+
+Analogia: Os Orcamentos são como a "meta de gastos" ou "meta de receitas" que você anota em um caderno para cada categoria (do seu Plano de Contas) e para cada mês. Você planeja gastar X com "Aluguel" em Março, e depois compara com o que realmente gastou.
+
+Relacionamento: Um Orcamento está vinculado a uma Empresa e a uma ContaPlanoID. Ele é uma projeção e um controle, que será comparado com os dados reais das Transacoes.
+
+7. Transações (Tabela Transacoes)
+
+Conceito: A tabela Transacoes é o coração do sistema, onde cada movimentação financeira real é registrada. Cada linha é um evento: um pagamento, um recebimento, uma transferência. Ela conecta todas as outras informações: qual Empresa fez, em qual ContaBancaria, qual TipoTransacao foi, e em qual ContaPlanoID foi classificada, além do Valor, Data, Descricao e Status (Pendente, Conciliado, Cancelado).
+
+Analogia: As Transacoes são como o extrato bancário detalhado ou o livro-caixa. Cada linha do extrato é uma transação. Ela é o registro factual de que "no dia X, a Empresa Y pagou Z reais da Conta W para a categoria K, referente a L". É o histórico completo de tudo o que aconteceu financeiramente.
+
+Relacionamento: A Transacoes é a tabela mais central. Ela se relaciona com Empresas, ContasBancarias, PlanoDeContas e TiposTransacao através de suas chaves estrangeiras, unindo todas as peças do quebra-cabeça financeiro.
+
+Como Eles Se Relacionam (A Grande Imagem)
+
+Imagine que você é o contador de um grupo de empresas.
+
+Primeiro, você tem uma lista de todos os bancos (Bancos) com os quais você pode trabalhar.
+Depois, você tem as pastas de cada empresa (Empresas) que você gerencia.
+Dentro de cada pasta de empresa, você encontra os talonários de cheques/cartões de débito (ContasBancarias) que aquela empresa tem em cada um dos bancos da sua lista.
+Para organizar os gastos e receitas de cada empresa, você cria um índice detalhado (PlanoDeContas) com categorias como "Salários", "Aluguel", "Vendas de Produtos", etc.
+Antes do mês começar, você anota as metas de gastos e receitas (Orcamentos) para cada categoria do seu índice, para cada empresa.
+Durante o mês, cada vez que dinheiro entra ou sai de uma conta bancária, você faz um registro detalhado (Transacoes). Nesse registro, você anota:
+Qual empresa fez a transação.
+Em qual conta bancária ela ocorreu.
+Se foi uma entrada, saída ou transferência (TiposTransacao).
+Em qual categoria do seu índice (PlanoDeContas) ela se encaixa.
+O valor, a data, a descrição e se já foi conciliada.
+
+No final, todas essas informações se conectam para que você possa responder a perguntas como: "Quanto a Empresa X gastou com Aluguel no mês de Março, comparado com o que foi orçado, e qual conta bancária foi usada para esse pagamento?"
+
+Essa é a beleza de um banco de dados relacional: ele organiza dados complexos em partes menores e as conecta de forma lógica, permitindo que você navegue e analise as informações de maneira poderosa e flexível.
