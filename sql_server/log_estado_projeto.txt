@@ -1,0 +1,51 @@
+## Estado — Após o Capítulo 24
+
+=== BANCO DE DADOS ===
+Nome: FinanceDB
+Status: Operacional
+
+=== TABELAS E REGISTROS ===
+Bancos:            6 registros
+TiposTransacao:    3 registros (RECEITA, DESPESA, TRANSF)
+Empresas:          3 registros
+ContasBancarias:   7 registros
+PlanoDeContas:     24 registros em 3 níveis hierárquicos
+Transacoes:        54 registros distribuídos em múltiplos meses
+Orcamentos:        39 registros por conta e período
+
+=== MÓDULOS CONCLUÍDOS ===
+✅ Módulo 1 — Fundamentos: Teoria e Ambiente (Capítulos 1–6)
+✅ Módulo 2 — Essencial: T-SQL Básico (Capítulos 7–14)
+✅ Módulo 3 — PROFICIENTE: Relacionamentos e Consultas Avançadas (Capítulos 15–22)
+✅ Módulo 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade (Capítulos 23–24)
+
+=== CAPÍTULOS DO MÓDULO 3 ===
+✅ Capítulo 15: INNER JOIN
+✅ Capítulo 16: LEFT JOIN, RIGHT JOIN e FULL OUTER JOIN
+✅ Capítulo 17: SELF JOIN — Auto-relacionamento e hierarquias
+✅ Capítulo 18: Funções de Agregação — SUM, COUNT, AVG, MIN e MAX
+✅ Capítulo 19: GROUP BY e HAVING — Agrupamento e filtragem de grupos
+✅ Capítulo 20: Funções de Data e Hora — Manipulação de datas e períodos
+✅ Capítulo 21: Funções de Texto — Manipulação de strings
+✅ Capítulo 22: Subconsultas — Subqueries Correlacionadas e Não Correlacionadas
+
+=== CAPÍTULOS DO MÓDULO 4 ===
+✅ Capítulo 23: Expressões de Tabela — CTEs com WITH
+✅ Capítulo 24: Funções de Janela — OVER, PARTITION BY e ROW_NUMBER
+
+=== HABILIDADES ADQUIRIDAS NESTE CAPÍTULO ===
+- Uso de funções de janela para cálculos analíticos
+- Definição de janelas com OVER(), PARTITION BY e ORDER BY
+- Aplicação de ROW_NUMBER(), RANK(), DENSE_RANK() e NTILE()
+- Uso de SUM(), AVG(), MIN(), MAX() como funções de janela
+- Controle do quadro da janela com ROWS e RANGE
+- Comparação de valores com LAG() e LEAD()
+- Identificação do primeiro/último valor com FIRST_VALUE() e LAST_VALUE()
+- Resolução de problemas financeiros complexos com funções de janela
+
+=== PRÓXIMO ===
+Capítulo 25: Views — Criando Relatórios Reutilizáveis
+Objetivo: encapsular consultas financeiras recorrentes em Views,
+entender a diferença entre views simples e views complexas,
+criar views com WITH SCHEMABINDING e compreender quando usar
+views versus CTEs versus subqueries no FinanceDB.
