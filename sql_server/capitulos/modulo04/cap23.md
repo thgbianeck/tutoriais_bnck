@@ -63,7 +63,6 @@ Uma CTE é uma expressão de tabela temporária nomeada que você define dentro 
 
 A sintaxe básica de uma CTE começa com a palavra-chave `WITH`:
 
-```sql
 ~~~sql
 WITH NomeDaCTE (Coluna1, Coluna2, ...) -- Opcional: lista de colunas
 AS
@@ -78,7 +77,6 @@ SELECT *
 FROM NomeDaCTE
 WHERE OutraCondicao;
 ~~~
-```
 
 **Pontos importantes sobre CTEs:**
 
@@ -96,7 +94,6 @@ Vamos começar com um exemplo prático no FinanceDB. Suponha que queremos ver to
 
 **Abordagem sem CTE (usando subconsulta na cláusula FROM):**
 
-```sql
 ~~~sql
 SELECT
     T.Descricao AS DescricaoTransacao,
@@ -121,13 +118,11 @@ INNER JOIN dbo.PlanoDeContas AS PC
 ORDER BY
     T.DataLancamento;
 ~~~
-```
 
 Essa consulta funciona, mas a subconsulta na cláusula `FROM` já começa a deixar o código um pouco denso. Agora, vejamos com uma CTE:
 
 **Abordagem com CTE:**
 
-```sql
 ~~~sql
 WITH DespesasTechSolutions AS
 (
@@ -163,7 +158,6 @@ INNER JOIN dbo.PlanoDeContas AS PC
 ORDER BY
     DTS.DataLancamento;
 ~~~
-```
 
 **Análise:**
 A versão com CTE é visivelmente mais clara. A lógica de filtragem das despesas da "Tech Solutions" está encapsulada na CTE `DespesasTechSolutions`. A query principal então usa essa CTE como uma tabela comum, facilitando a leitura e o entendimento do fluxo de dados. Se precisássemos adicionar mais filtros ou junções à `DespesasTechSolutions`, faríamos isso dentro da definição da CTE, mantendo a query principal limpa.
@@ -176,7 +170,6 @@ Você pode definir múltiplas CTEs em uma única instrução `WITH`, e uma CTE p
 
 **Abordagem com CTEs Múltiplas:**
 
-```sql
 ~~~sql
 WITH SaldoInicialContas AS
 (
@@ -225,7 +218,6 @@ WHERE
 ORDER BY
     SaldoFinal DESC;
 ~~~
-```
 
 **Análise:**
 Neste exemplo, definimos duas CTEs: `SaldoInicialContas` e `MovimentacoesAteMarco`. A query principal então as utiliza, juntamente com a tabela `ContasBancarias`, para calcular o saldo final. A clareza é imensa: cada CTE resolve uma parte específica do problema (obter saldos iniciais, somar movimentações), e a query final as combina. Isso é muito mais fácil de entender do que uma única query com múltiplas subconsultas aninhadas.
@@ -248,7 +240,6 @@ Uma CTE recursiva tem duas partes, unidas por `UNION ALL`:
 1.  **Membro Âncora (Anchor Member):** A query inicial que define o conjunto base da recursão. É a "raiz" ou o "ponto de partida" da sua hierarquia.
 2.  **Membro Recursivo (Recursive Member):** A query que se auto-referencia (chama a própria CTE) para expandir o conjunto de resultados, geralmente juntando a CTE com a tabela original para encontrar o próximo nível da hierarquia.
 
-```sql
 ~~~sql
 WITH NomeDaCTERecursiva (Coluna1, Coluna2, ..., NivelAtual)
 AS
@@ -271,13 +262,11 @@ AS
 SELECT *
 FROM NomeDaCTERecursiva;
 ~~~
-```
 
 **Exemplo no FinanceDB: Listando a Hierarquia de Contas Filhas**
 
 Vamos listar todas as contas que são descendentes de "Despesas Operacionais" (Código '2.1') da empresa "Tech Solutions Ltda.".
 
-```sql
 ~~~sql
 WITH HierarquiaContas AS
 (
@@ -329,7 +318,6 @@ FROM
 ORDER BY
     CaminhoCompleto;
 ~~~
-```
 
 **Análise:**
 A CTE `HierarquiaContas` começa com a conta "Despesas Operacionais". O membro recursivo então encontra todas as contas cujo `ContaPaiID` corresponde ao `ContaPlanoID` das contas já na CTE. Isso se repete até que não haja mais contas filhas para adicionar. A coluna `CaminhoCompleto` é um truque útil para visualizar a estrutura hierárquica.
@@ -383,7 +371,6 @@ A empresa "Comercial Bianeck S.A." deseja um relatório que mostre o total de re
 
 ### Resolução do Desafio
 
-```sql
 ~~~sql
 WITH ReceitasMensais AS
 (
@@ -446,7 +433,6 @@ INNER JOIN DespesasMensais AS DM
 ORDER BY
     RM.Ano, RM.Mes;
 ~~~
-```
 
 **Comentários sobre a Resolução:**
 1.  **`ReceitasMensais` CTE:** Esta CTE calcula o total de receitas por ano e mês para a "Comercial Bianeck S.A.", filtrando por transações de crédito conciliadas no primeiro trimestre.

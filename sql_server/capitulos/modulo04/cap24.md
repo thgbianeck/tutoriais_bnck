@@ -109,11 +109,13 @@ ORDER BY
 *   `SUM(t.Valor) OVER (PARTITION BY t.EmpresaID)`: Calcula a soma de `t.Valor` para cada `EmpresaID` separadamente. Para cada linha, a função olha para todas as outras linhas que têm o mesmo `EmpresaID` e soma seus valores. O resultado é o mesmo para todas as transações *da mesma empresa*.
 
 **Resultado Parcial Esperado:**
-TransacaoID Empresa DataLancamento Valor TotalGeralTransacoes TotalTransacoesPorEmpresa
-
-1 TechSol 2026-01-05 12000.00 504800.00 256500.00 2 TechSol 2026-01-12 18000.00 504800.00 256500.00 … 36 TechSol 2026-03-22 1500.00 504800.00 256500.00 37 Bianeck Com. 2026-01-10 45000.00 504800.00 248300.00 … 54 Bianeck Com. 2026-03-28 10000.00 504800.00 248300.00
-
-Observe que `TotalGeralTransacoes` é o mesmo para todas as linhas, enquanto `TotalTransacoesPorEmpresa` se repete para todas as transações da mesma empresa. A diferença fundamental é que as linhas individuais *não foram agrupadas e colapsadas*, como aconteceria com um `GROUP BY`.
+|TransacaoID|Empresa|DataLancamento|Valor|TotalGeralTransacoes|TotalTransacoesPorEmpresa|
+|---|---|---|---|---|---|
+|1|TechSol|2026-01-05|12000.00|504800.00|256500.00|
+|2|TechSol|2026-01-12|18000.00|504800.00|256500.00|
+|…|…|…|…|…|…|
+|36|TechSol|2026-03-22|1500.00|504800.00|256500.00|
+|37|Bianeck Com.|2026-...
 
 ---
 
@@ -128,9 +130,7 @@ As funções de ranking são usadas para atribuir um número a cada linha dentro
 **Cenário Financeiro:** Queremos ver a ordem das transações de cada conta bancária, da mais antiga para a mais recente.
 
 
-sql
-Copiar
-
+~~~sql
 SELECT
     t.TransacaoID,
     cb.NumeroConta,
@@ -146,7 +146,7 @@ WHERE
     t.DataLancamento >= '2026-01-01' AND t.DataLancamento < '2026-04-01'
 ORDER BY
     cb.NumeroConta, OrdemTransacaoNaConta;
-
+~~~
 
 
 
@@ -156,9 +156,13 @@ ORDER BY
 *   `ROW_NUMBER()`: Atribui 1 à primeira transação da conta, 2 à segunda, e assim por diante.
 
 **Resultado Parcial Esperado:**
-TransacaoID NumeroConta DataLancamento Valor Descricao OrdemTransacaoNaConta
-
-1 12345-6 2026-01-05 12000.00 Consultoria estratégica — Cliente Alpha 1 7 12345-6 2026-01-05 32000.00 Folha de pagamento — Janeiro 2026 2 10 12345-6 2026-01-05 3500.00 Aluguel escritório Paulista — Janeiro 3 … 33 12345-6 2026-03-05 3500.00 Aluguel escritório Paulista — Março 15 …
+|TransacaoID|NumeroConta|DataLancamento|Valor|Descricao|OrdemTransacaoNaConta|
+|---|---|---|---|---|---|
+|1|12345-6|2026-01-05|12000.00|Consultoria estratégica — Cliente Alpha|1|
+|7|12345-6|2026-01-05|32000.00|Folha de pagamento — Janeiro 2026|2|
+|10|12345-6|2026-01-05|3500.00|Aluguel escritório Paulista — Janeiro|3|
+|…|…|…|…|…|…|
+|33|12345-6|2026-03-05|3500.00|Aluguel escritório Paulista — Março|15|
 
 ### 2.2. `RANK()`: Ranking com Lacunas
 
@@ -167,8 +171,7 @@ TransacaoID NumeroConta DataLancamento Valor Descricao OrdemTransacaoNaConta
 **Cenário Financeiro:** Queremos rankear as despesas mais altas de cada empresa, mas se houver despesas com o mesmo valor, elas devem ter o mesmo rank.
 
 
-sql
-Copiar
+~~~sql
 
 SELECT
     t.TransacaoID,
@@ -188,7 +191,7 @@ WHERE
     AND t.DataLancamento >= '2026-01-01' AND t.DataLancamento < '2026-04-01'
 ORDER BY
     e.NomeFantasia, RankDespesa, t.Valor DESC;
-
+~~~
 
 
 
@@ -198,11 +201,12 @@ ORDER BY
 *   `RANK()`: Atribui o rank. Se houver duas despesas de R$ 35.000,00 e elas forem as maiores, ambas receberão rank 1. A próxima despesa (seja qual for seu valor) receberá rank 3.
 
 **Resultado Parcial Esperado (exemplo hipotético com empates):**
-TransacaoID Empresa DataLancamento Valor Descricao RankDespesa
-
-30 TechSol 2026-03-05 34000.00 Folha de pagamento — Março 2026 1 7 TechSol 2026-01-05 32000.00 Folha de pagamento — Janeiro 2026 2 18 TechSol 2026-02-05 33000.00 Folha de pagamento — Fevereiro 2026 2 …
-
-*Nota: No dataset atual, pode não haver empates exatos para ilustrar o salto, mas a lógica é essa.*
+|TransacaoID|Empresa|DataLancamento|Valor|Descricao|RankDespesa|
+|---|---|---|---|---|---|
+|30|TechSol|2026-03-05|34000.00|Folha de pagamento — Março 2026|1|
+|7|TechSol|2026-01-05|32000.00|Folha de pagamento — Janeiro 2026|2|
+|18|TechSol|2026-02-05|33000.00|Folha de pagamento — Fevereiro 2026|2|
+|%Nota: No dataset atual, pode não haver empates exatos para ilustrar o salto, mas a lógica é essa.*
 
 ### 2.3. `DENSE_RANK()`: Ranking Contínuo
 
@@ -211,8 +215,7 @@ TransacaoID Empresa DataLancamento Valor Descricao RankDespesa
 **Cenário Financeiro:** O mesmo cenário anterior, mas queremos um ranking contínuo.
 
 
-sql
-Copiar
+~~~sql
 
 SELECT
     t.TransacaoID,
@@ -232,7 +235,7 @@ WHERE
     AND t.DataLancamento >= '2026-01-01' AND t.DataLancamento < '2026-04-01'
 ORDER BY
     e.NomeFantasia, DenseRankDespesa, t.Valor DESC;
-
+~~~
 
 
 
@@ -252,8 +255,6 @@ TransacaoID Empresa DataLancamento Valor Descricao DenseRankDespesa
 
 
 ~~~sql
-Copiar
-
 SELECT
     t.TransacaoID,
     e.NomeFantasia AS Empresa,
@@ -459,9 +460,13 @@ ORDER BY
 *   `ROWS BETWEEN 2 PRECEDING AND CURRENT ROW`: Para cada linha, a janela inclui a linha atual e as 2 linhas anteriores *dentro da mesma partição*, ordenadas pela data. Isso cria uma média móvel de 3 transações.
 
 **Resultado Parcial Esperado:**
-TransacaoID NumeroConta DataLancamento Valor Descricao MediaMovel3Transacoes
-
-1 12345-6 2026-01-05 12000.00 Consultoria estratégica — Cliente Alpha 12000.00 7 12345-6 2026-01-05 32000.00 Folha de pagamento — Janeiro 2026 22000.00 -- (12000+32000)/2 10 12345-6 2026-01-05 3500.00 Aluguel escritório Paulista — Janeiro 15833.33 -- (12000+32000+3500)/3 11 12345-6 2026-01-15 980.00 Energia elétrica — Janeiro 2026 12160.00 -- (32000+3500+980)/3 …
+|TransacaoID|NumeroConta|DataLancamento|Valor|Descricao|MediaMovel3Transacoes|
+|---|---|---|---|---|---|
+|1|12345-6|2026-01-05|12000.00|Consultoria estratégica — Cliente Alpha|12000.00|
+|7|12345-6|2026-01-05|32000.00|Folha de pagamento — Janeiro 2026|22000.00|
+|10|12345-6|2026-01-05|3500.00|Aluguel escritório Paulista — Janeiro|15833.33|
+|11|12345-6|2026-01-15|980.00/Energia elétrica — Janeiro 2026|12160.00|
+|%…|%…|%…|%…|%…|%…|
 
 ### 4.2. `RANGE BETWEEN ... AND ...`: Agregação por Intervalo de Valores
 
@@ -513,9 +518,12 @@ ORDER BY
 *   `LEAD(t.Valor, 1, 0.00)`: Para cada transação, retorna o `Valor` da transação imediatamente posterior (`offset = 1`) na mesma conta. Se não houver posterior, retorna `0.00`.
 
 **Resultado Parcial Esperado:**
-TransacaoID NumeroConta DataLancamento Valor Descricao ValorTransacaoAnterior ValorTransacaoPosterior
-
-1 12345-6 2026-01-05 12000.00 Consultoria estratégica — Cliente Alpha 0.00 32000.00 7 12345-6 2026-01-05 32000.00 Folha de pagamento — Janeiro 2026 12000.00 3500.00 10 12345-6 2026-01-05 3500.00 Aluguel escritório Paulista — Janeiro 32000.00 980.00 …
+|TransacaoID|NumeroConta|DataLancamento|Valor|Descricao|ValorTransacaoAnterior|ValorTransacaoPosterior|
+|---|---|---|---|---|---|---|
+|1|12345-6|2026-01-05|12000.00|Consultoria estratégica — Cliente Alpha|0.00|32000.00|
+|7|12345-6|2026-01-05|32000.00|Folha de pagamento — Janeiro 2026|12000.00|3500.00|
+|10|12345-6|2026-01-05|3500.00|Aluguel escritório Paulista — Janeiro|32000.00|980.<PASSWORD>|
+|%…|%…|%…|%…|%…|%…|%…|
 
 ### 5.2. `FIRST_VALUE()` e `LAST_VALUE()`: Primeiro e Último Valor da Janela
 

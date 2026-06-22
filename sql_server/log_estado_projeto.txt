@@ -1,4 +1,4 @@
-## Estado — Após o Capítulo 24
+## Estado — Após o Capítulo 25
 
 === BANCO DE DADOS ===
 Nome: FinanceDB
@@ -13,11 +13,18 @@ PlanoDeContas:     24 registros em 3 níveis hierárquicos
 Transacoes:        54 registros distribuídos em múltiplos meses
 Orcamentos:        39 registros por conta e período
 
+=== VIEWS CRIADAS ===
+vw_SaldosContas
+vw_TransacoesDetalhadas
+vw_DRESimplificadaMensal
+vw_RankingDespesasPorCategoria
+vw_OrcamentoRealizadoMensal
+
 === MÓDULOS CONCLUÍDOS ===
 ✅ Módulo 1 — Fundamentos: Teoria e Ambiente (Capítulos 1–6)
 ✅ Módulo 2 — Essencial: T-SQL Básico (Capítulos 7–14)
 ✅ Módulo 3 — PROFICIENTE: Relacionamentos e Consultas Avançadas (Capítulos 15–22)
-✅ Módulo 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade (Capítulos 23–24)
+✅ Módulo 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade (Capítulos 23–25)
 
 === CAPÍTULOS DO MÓDULO 3 ===
 ✅ Capítulo 15: INNER JOIN
@@ -32,20 +39,17 @@ Orcamentos:        39 registros por conta e período
 === CAPÍTULOS DO MÓDULO 4 ===
 ✅ Capítulo 23: Expressões de Tabela — CTEs com WITH
 ✅ Capítulo 24: Funções de Janela — OVER, PARTITION BY e ROW_NUMBER
+✅ Capítulo 25: Views — Criando Relatórios Reutilizáveis
 
 === HABILIDADES ADQUIRIDAS NESTE CAPÍTULO ===
-- Uso de funções de janela para cálculos analíticos
-- Definição de janelas com OVER(), PARTITION BY e ORDER BY
-- Aplicação de ROW_NUMBER(), RANK(), DENSE_RANK() e NTILE()
-- Uso de SUM(), AVG(), MIN(), MAX() como funções de janela
-- Controle do quadro da janela com ROWS e RANGE
-- Comparação de valores com LAG() e LEAD()
-- Identificação do primeiro/último valor com FIRST_VALUE() e LAST_VALUE()
-- Resolução de problemas financeiros complexos com funções de janela
+- Criação de views simples e complexas
+- Uso de views para simplificar consultas e reutilizar lógica
+- Aplicação de WITH SCHEMABINDING para proteger a estrutura da view
+- Compreensão da diferença entre views, CTEs e subqueries
+- Criação de views para relatórios financeiros comuns (saldos, DRE, orçado vs. realizado)
 
 === PRÓXIMO ===
-Capítulo 25: Views — Criando Relatórios Reutilizáveis
-Objetivo: encapsular consultas financeiras recorrentes em Views,
-entender a diferença entre views simples e views complexas,
-criar views com WITH SCHEMABINDING e compreender quando usar
-views versus CTEs versus subqueries no FinanceDB.
+Capítulo 26: Stored Procedures — Automatizando Operações
+Objetivo: criar Stored Procedures com parâmetros de entrada e saída para automatizar
+operações financeiras no FinanceDB, como inserção de lançamentos e geração de relatórios,
+entendendo os benefícios de segurança, reuso e performance.
