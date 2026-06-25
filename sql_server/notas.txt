@@ -6,6 +6,10 @@ Quero que aborde todos os conteúdos, teoria e prática, tenha em mente que o p�
 não cite nas aulas geradas os arquivos auxiliares para a geração de prompts ou arquivos que usamos em anexo para construir os conteudos.
 
 O padrão correto que deve ser seguido no documento é este:
+Os dados estão em anexo no arquivo dicdad.txt
+o plano_mestre está anexando
+log_estado do projeto do capitulo anterior anexando
+prompts individuais para saber o que foi abordado em outros capitulos anexado
 
 O documento inteiro fica dentro de ```markdown (abre) e ``` (fecha)
 Blocos internos de código SQL, java, javascript e outras linguagens usam ~~~ abrindo e fechando

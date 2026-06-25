@@ -615,22 +615,22 @@ graph TD
     C --> D[BEGIN TRANSACTION];
     D --> E{Validação 1?};
     E -- Sim --> F{Validação 2?};
-    E -- Não --> G[SET @MensagemErro, SET @NovoTransacaoID = -1];
+    E -- Não --> G["SET @MensagemErro, SET @NovoTransacaoID = -1"];
     G --> H[ROLLBACK TRANSACTION];
     H --> I[RETURN -1];
     F -- Sim --> J[Instruções INSERT/UPDATE/DELETE];
-    F -- Não --> K[SET @MensagemErro, SET @NovoTransacaoID = -X];
+    F -- Não --> K["SET @MensagemErro, SET @NovoTransacaoID = -X"];
     K --> H;
-    J --> L[SET @NovoTransacaoID = SCOPE_IDENTITY()];
+    J --> L["SET @NovoTransacaoID = SCOPE_IDENTITY()"];
     L --> M[COMMIT TRANSACTION];
-    M --> N[SET @MensagemErro = 'Sucesso'];
+    M --> N["SET @MensagemErro = 'Sucesso'"];
     N --> O[Fim da SP];
     I --> O;
     H --> O;
     C --> P[BEGIN CATCH];
-    P --> Q{@@TRANCOUNT > 0?};
+    P --> Q{"@@TRANCOUNT > 0?"};
     Q -- Sim --> R[ROLLBACK TRANSACTION];
-    Q -- Não --> S[SET @NovoTransacaoID = -99, SET @MensagemErro = ERROR_MESSAGE()];
+    Q -- Não --> S["SET @NovoTransacaoID = -99, SET @MensagemErro = ERROR_MESSAGE()"];
     R --> S;
     S --> O;
 ~~~

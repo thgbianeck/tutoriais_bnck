@@ -1,16 +1,16 @@
-## Estado — Após o Capítulo 25
+## Estado — Após o Capítulo 27
 
 === BANCO DE DADOS ===
 Nome: FinanceDB
 Status: Operacional
 
 === TABELAS E REGISTROS ===
-Bancos:            6 registros
+Bancos:            5+ registros
 TiposTransacao:    3 registros (RECEITA, DESPESA, TRANSF)
-Empresas:          3 registros
-ContasBancarias:   7 registros
+Empresas:          2+ registros
+ContasBancarias:   5+ registros
 PlanoDeContas:     24 registros em 3 níveis hierárquicos
-Transacoes:        54 registros distribuídos em múltiplos meses
+Transacoes:        58 registros (2 novos inseridos via SP, 2 da transferência)
 Orcamentos:        39 registros por conta e período
 
 === VIEWS CRIADAS ===
@@ -20,11 +20,25 @@ vw_DRESimplificadaMensal
 vw_RankingDespesasPorCategoria
 vw_OrcamentoRealizadoMensal
 
+=== STORED PROCEDURES CRIADAS ===
+usp_InserirBanco
+usp_AtualizarStatusTransacao
+usp_InserirTransacao
+usp_GerarDRESimplificada
+usp_TransferirFundos
+
+=== FUNÇÕES T-SQL CRIADAS ===
+ufn_FormatarCNPJ (Scalar Function)
+ufn_CalcularJurosSimples (Scalar Function)
+uft_TransacoesPorPeriodo (Inline Table-Valued Function)
+uft_RelatorioOrcamentoRealizado (Multi-Statement Table-Valued Function)
+uft_SaldoContaBancaria (Inline Table-Valued Function - Desafio)
+
 === MÓDULOS CONCLUÍDOS ===
 ✅ Módulo 1 — Fundamentos: Teoria e Ambiente (Capítulos 1–6)
 ✅ Módulo 2 — Essencial: T-SQL Básico (Capítulos 7–14)
 ✅ Módulo 3 — PROFICIENTE: Relacionamentos e Consultas Avançadas (Capítulos 15–22)
-✅ Módulo 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade (Capítulos 23–25)
+✅ Módulo 4 — AVANÇADO: Objetos de Banco de Dados e Programabilidade (Capítulos 23–27)
 
 === CAPÍTULOS DO MÓDULO 3 ===
 ✅ Capítulo 15: INNER JOIN
@@ -40,16 +54,19 @@ vw_OrcamentoRealizadoMensal
 ✅ Capítulo 23: Expressões de Tabela — CTEs com WITH
 ✅ Capítulo 24: Funções de Janela — OVER, PARTITION BY e ROW_NUMBER
 ✅ Capítulo 25: Views — Criando Relatórios Reutilizáveis
+✅ Capítulo 26: Stored Procedures — Automatizando Operações
+✅ Capítulo 27: Funções T-SQL — Scalar e Table-Valued Functions
 
 === HABILIDADES ADQUIRIDAS NESTE CAPÍTULO ===
-- Criação de views simples e complexas
-- Uso de views para simplificar consultas e reutilizar lógica
-- Aplicação de WITH SCHEMABINDING para proteger a estrutura da view
-- Compreensão da diferença entre views, CTEs e subqueries
-- Criação de views para relatórios financeiros comuns (saldos, DRE, orçado vs. realizado)
+- Criação de Funções Escalares (Scalar Functions)
+- Criação de Funções com Valor de Tabela (Table-Valued Functions - TVFs)
+- Distinção entre Inline TVFs (ITVFs) e Multi-Statement TVFs (MSTVFs)
+- Uso de funções para cálculos, formatações e geração de conjuntos de dados
+- Compreensão das diferenças e casos de uso entre Funções e Stored Procedures
+- Alteração e remoção de funções com ALTER FUNCTION e DROP FUNCTION
 
 === PRÓXIMO ===
-Capítulo 26: Stored Procedures — Automatizando Operações
-Objetivo: criar Stored Procedures com parâmetros de entrada e saída para automatizar
-operações financeiras no FinanceDB, como inserção de lançamentos e geração de relatórios,
-entendendo os benefícios de segurança, reuso e performance.
+Capítulo 28: Triggers — Auditoria e Regras de Negócio Automáticas
+Objetivo: criar Triggers para registrar auditoria de operações financeiras,
+garantir a integridade dos dados e implementar regras de negócio complexas
+no FinanceDB de forma automática e reativa a eventos de DML (INSERT, UPDATE, DELETE).
