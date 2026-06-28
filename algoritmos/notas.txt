@@ -1,0 +1,14 @@
+Tema: Algoritmos do Basíco ao avançado.
+Estou usando o windows 11.
+Estou usando o VS Code e Python como liguagem de programação
+A Versão do python é a mais atual
+Quero que aborde todos os algoritmos, em ordem, teoria e prática, tenha em mente que o público é iniciante, não coloque códigos muito complexos, ou que usem recursos muito avançados. O foco é ensinar os conceitos básicos de algoritmos usando Python. Quero também que gere testes para cada aula, a cada aula deverá ter um projeto ou código que não dependa de código da aula anterior, ou seja, cada aula deverá ser independente, para que o aluno possa praticar e testar os conceitos aprendidos.
+não cite nas aulas geradas os arquivos auxiliares para a geração de prompts ou arquivos que usamos em anexo para construir os conteudos.
+
+O documento inteiro fica dentro de ```markdown (abre) e ``` (fecha)
+Blocos internos de código Python e outras linguagens usam ~~~ abrindo e fechando
+Blocos internos de texto puro usam ~~~text e ~~~
+Blocos internos de diagrama usam ~~~mermaid e ~~~
+Nenhum bloco interno usa triple backtick ```
+Não quebre linhas de parágrafos, a não ser que seja necessário para a formatação do markdown ou para a clareza do texto.
+Use negrito para destacar palavras-chave, conceitos importantes e comandos.
