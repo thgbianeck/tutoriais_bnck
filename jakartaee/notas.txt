@@ -1,0 +1,20 @@
+Tema: Jakarta EE
+Estou usando o windows 11.
+Estou usando o VS Code
+A Versão é a 11 do Jakarta EE, a Versão do Java é a 21. Use JUnit na versão 5 para seguir a metodologia TDD, use gradle como ferramenta de build, use arquitetura MVC para não complicar tanto o aprendizado e focar mais na ferramenta.
+Quero que aborde todos os conteúdos, teoria e prática, tenha em mente que o público é iniciante, não coloque códigos muito complexos, ou que usem recursos avançados. O foco é ensinar os conceitos básicos, para que o aluno possa começar a escrever suas próprias consultas e entender como o Jakarta EE funciona. Não coloque nada que ainda não foi abordado, o conhecimento deverá ser construído passo a passo.
+não cite nas aulas geradas os arquivos auxiliares para a geração de prompts ou arquivos que usamos em anexo para construir os conteudos.
+
+O padrão correto que deve ser seguido no documento é este:
+Os dados estão em anexo no arquivo dicdad.txt
+o plano_mestre está anexando
+log_estado do projeto do capitulo anterior anexando
+prompts individuais para saber o que foi abordado em outros capitulos anexado
+
+O documento inteiro fica dentro de ```markdown (abre) e ``` (fecha)
+Blocos internos de códigos usam ~~~ abrindo e fechando
+Blocos internos de texto puro usam ~~~text e ~~~
+Blocos internos de diagrama usam ~~~mermaid e ~~~
+Nenhum bloco interno usa triple backtick ```
+Não quebre linhas de parágrafos, a não ser que seja necessário para a formatação do markdown ou para a clareza do texto.
+Use negrito para destacar palavras-chave, conceitos importantes e comandos.
