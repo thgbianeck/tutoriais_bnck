@@ -44,11 +44,15 @@ Entender o que é um Servlet, compreender em profundidade seu ciclo de vida comp
 ## Pré-requisitos
 Aula 4 concluída. O GlassFish 7 está instalado em `C:\ferramentas\glassfish7\`, o domínio `domain1` inicia corretamente com `asadmin start-domain domain1` e o TaskFlow está deployado e acessível em `http://localhost:8080/taskflow` exibindo a página `index.html`.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ## Resumo da Aula Anterior
 
 Na Aula 4 você instalou o GlassFish 7, aprendeu sobre sua estrutura interna de domínios e instâncias, iniciou e parou o servidor via `asadmin`, fez o deploy do `taskflow.war` pelo console de administração em `http://localhost:4848` e pelo método `autodeploy`, e verificou que a aplicação responde em `http://localhost:8080/taskflow`. Até agora, a aplicação serve apenas arquivos estáticos — HTML sem nenhuma lógica Java. A partir desta aula, isso muda completamente.
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -64,6 +68,8 @@ Um **Servlet** é, em sua essência mais simples, uma **classe Java que sabe lid
 
 A especificação Jakarta Servlet (versão 6.1 no Jakarta EE 11) define exatamente como um Servlet deve se comportar: quais métodos deve ter, quando cada método é chamado, como acessar os dados da requisição e como escrever a resposta. Isso garante que seu código funcione da mesma forma no GlassFish, no WildFly ou em qualquer outro servidor que implemente a especificação.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### A hierarquia de classes: de Servlet a HttpServlet
@@ -77,6 +83,8 @@ Logo abaixo está a **classe abstrata `jakarta.servlet.GenericServlet`**, que im
 O que nos interessa diretamente é o próximo nível: a **classe abstrata `jakarta.servlet.http.HttpServlet`**. Ela herda de `GenericServlet` e adiciona todo o conhecimento sobre o protocolo HTTP. É ela que implementa o método `service` de forma inteligente: quando uma requisição chega, ela verifica o método HTTP da requisição (GET, POST, PUT, DELETE, etc.) e delega para o método correspondente: `doGet`, `doPost`, `doPut`, `doDelete`. Isso significa que você, ao criar seu próprio Servlet, apenas precisa **herdar de `HttpServlet`** e **sobrescrever os métodos** que interessam para a sua lógica — normalmente `doGet` e `doPost`.
 
 Você nunca precisa chamar `service` diretamente. O GlassFish chama `service`, que por sua vez chama `doGet` ou `doPost` automaticamente dependendo do tipo da requisição. Sua responsabilidade é apenas implementar o que acontece dentro de `doGet` ou `doPost`.
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -96,6 +104,8 @@ Este ciclo é gerenciado inteiramente pelo servidor de aplicações. Você **nun
 
 Um detalhe crítico sobre **thread safety**: como o GlassFish usa **uma única instância** do Servlet para atender múltiplas requisições simultâneas em threads diferentes, você nunca deve guardar dados específicos de uma requisição como **atributos de instância** do Servlet. Se você fizer `this.nomeDoUsuario = request.getParameter("nome")`, duas requisições simultâneas poderão sobrescrever o mesmo atributo — causando bugs sutis e difíceis de reproduzir. Sempre use **variáveis locais** dentro dos métodos `doGet` e `doPost` para guardar dados específicos de uma requisição.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### A anotação @WebServlet: registrando o Servlet no servidor
@@ -108,6 +118,8 @@ Por exemplo, `@WebServlet("/hello")` diz ao GlassFish: "quando chegar uma requis
 
 A anotação `@WebServlet` aceita vários parâmetros opcionais além do padrão de URL, como `name` (nome do Servlet), `loadOnStartup` (se deve ser inicializado junto com a aplicação, antes da primeira requisição) e `initParams` (parâmetros de inicialização). Para os propósitos desta aula, usaremos apenas o padrão de URL.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### Como o GlassFish mapeia uma URL para um Servlet
@@ -117,6 +129,8 @@ Quando o GlassFish faz o deploy de um WAR, ele realiza um processo chamado **sca
 Quando uma requisição HTTP chega — por exemplo, `GET /taskflow/hello` — o GlassFish primeiro identifica a aplicação pelo context root `/taskflow`. Depois, pega o caminho restante (`/hello`) e consulta o mapa de Servlets registrados para encontrar qual classe deve processar aquela requisição. Encontrando `HelloServlet`, ele verifica se já existe uma instância dela em memória. Se não, chama o construtor padrão (sem argumentos) para criar a instância e depois chama `init`. Se já existir, reutiliza a instância existente. Por fim, chama `service`, que delega para `doGet` (porque a requisição é do tipo GET).
 
 Se nenhum Servlet estiver mapeado para a URL requisitada, o GlassFish retorna automaticamente um erro **HTTP 404 (Not Found)**. É por isso que errar o mapeamento na anotação é a causa mais comum de 404 ao desenvolver com Jakarta EE.
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -130,6 +144,8 @@ Em seguida, você obtém um **`PrintWriter`** com `response.getWriter()`. O `Pri
 
 Uma boa prática é sempre fechar o `PrintWriter` ao final do método com `writer.close()`, sinalizando ao servidor que a resposta está completa. Embora o GlassFish feche automaticamente ao final do processamento, fechar explicitamente é uma boa prática de programação defensiva.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### O fluxo completo de uma requisição ao HelloServlet
@@ -140,11 +156,15 @@ O usuário digita `http://localhost:8080/taskflow/hello` no navegador e pression
 
 Na segunda requisição para `/hello`, o GlassFish já tem a instância de `HelloServlet` em memória — ele pula a criação e o `init` e vai direto para `service`. Isso é significativamente mais rápido do que criar um novo objeto a cada requisição.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ## Analogia de Ancoragem
 
 Um Servlet é como um **funcionário de um balcão de atendimento**. Quando a empresa abre (deploy da aplicação), o funcionário chega ao trabalho e se prepara (`init`): organiza sua mesa, liga o computador, prepara os formulários. Durante todo o dia de trabalho, cada cliente que chega ao balcão é atendido por ele (`service` → `doGet` ou `doPost`): ele ouve o pedido, processa e entrega a resposta. O funcionário não muda — é sempre a mesma pessoa — mas ela atende um cliente após o outro. Quando a empresa fecha (undeploy), o funcionário finaliza o expediente (`destroy`): desliga o computador, guarda os materiais, deixa tudo em ordem para o dia seguinte. O gerente do restaurante (GlassFish) decide quando o funcionário começa, quando atende cada cliente e quando encerra o expediente — o funcionário apenas faz seu trabalho.
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -174,6 +194,8 @@ sequenceDiagram
     CONT-->>GF: resposta HTTP 200 OK
     GF-->>NAV: HTML renderizado no navegador
 ~~~
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -272,6 +294,8 @@ public class HelloServlet extends HttpServlet {
 }
 ~~~
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### Passo 2: Gerando o WAR e fazendo o deploy
@@ -308,6 +332,8 @@ type C:\ferramentas\glassfish7\domains\domain1\logs\server.log
 
 Procure por linhas que contenham `HelloServlet` ou `taskflow` com timestamps recentes. Uma linha como `Loading application taskflow at /taskflow` confirma que o redeploy foi concluído.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### Passo 3: Testando no navegador
@@ -341,6 +367,8 @@ E tente acessar uma URL que não existe para ver o comportamento padrão do Glas
 http://localhost:8080/taskflow/nao-existe
 ~~~
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ### Passo 4: Commit do progresso
@@ -349,6 +377,8 @@ http://localhost:8080/taskflow/nao-existe
 git add src/main/java/com/taskflow/controller/HelloServlet.java
 git commit -m "feat: adiciona primeiro Servlet com @WebServlet mapeado em /hello"
 ~~~
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -388,6 +418,8 @@ git commit -m "feat: adiciona primeiro Servlet com @WebServlet mapeado em /hello
 
 **Scanning de Anotações:** Processo pelo qual o GlassFish examina todas as classes compiladas do WAR procurando por anotações Jakarta EE (`@WebServlet`, `@WebFilter`, etc.) durante o deploy.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ## Antecipação de Erros
@@ -405,6 +437,8 @@ git commit -m "feat: adiciona primeiro Servlet com @WebServlet mapeado em /hello
 **Atributos de instância em Servlets (bug de thread safety):** Se você declarar um campo como `private String resultado;` e atribuir dentro de `doGet`, duas requisições simultâneas podem sobrescrever o valor uma da outra. Sempre use variáveis locais dentro dos métodos `doGet` e `doPost` para dados específicos de uma requisição.
 
 **WAR antigo sendo usado após modificações:** O GlassFish usa o WAR que está na pasta `autodeploy`. Se você modificar o código mas esquecer de executar `gradle war` e copiar o novo WAR, o GlassFish continuará usando a versão antiga. Sempre siga a sequência: modifica o código → `gradle clean war` → copia o WAR → aguarda o redeploy.
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -442,6 +476,8 @@ git add modulo_01_fundamentos/aula_05/
 git commit -m "feat: adiciona SobreServlet e observacao do ciclo de vida - aula 05"
 ~~~
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ## Resolução Comentada do Exercício
@@ -450,11 +486,15 @@ git commit -m "feat: adiciona SobreServlet e observacao do ciclo de vida - aula 
 
 **Parte 2 — Ciclo de vida:** O `init` deve aparecer **uma única vez** no log, na primeira requisição para `/hello`, mesmo que você acesse a URL cinco ou dez vezes em sequência. Isso demonstra que o GlassFish cria a instância e chama `init` apenas uma vez e depois reutiliza a mesma instância. O `destroy` deve aparecer **uma única vez** no log ao fazer o undeploy, confirmando que o GlassFish chama `destroy` ao encerrar o ciclo de vida do Servlet. Se você fizer redeploy (não undeploy), verá `destroy` seguido de `init` — porque o GlassFish destrói a instância antiga e cria uma nova.
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ## Resumo dos Pontos-Chave
 
 Um **Servlet** é uma classe Java que herda de `HttpServlet` e processa requisições HTTP, sendo gerenciada inteiramente pelo servidor de aplicações. O **ciclo de vida** tem três fases: `init` (uma vez, ao criar a instância), `service` → `doGet`/`doPost` (para cada requisição) e `destroy` (uma vez, ao descarregar). A anotação **`@WebServlet`** registra o Servlet e define o mapeamento de URL, substituindo a configuração verbosa no `web.xml`. O GlassFish usa **uma única instância** do Servlet para atender múltiplas requisições em threads simultâneas — portanto, nunca use atributos de instância para dados específicos de uma requisição. Para escrever a resposta HTML, chame `response.setContentType("text/html;charset=UTF-8")` antes de `response.getWriter()` e use o `PrintWriter` retornado para escrever o conteúdo. O fluxo de desenvolvimento é sempre: modifica o código → `gradle clean war` → copia o WAR para `autodeploy` → aguarda o redeploy automático → testa no navegador.
+
+[Voltar ao Índice](#índice)
 
 ---
 
@@ -476,11 +516,15 @@ Um **Servlet** é uma classe Java que herda de `HttpServlet` e processa requisi�
   os primeiros testes com JUnit 5 seguindo a metodologia TDD.
 ~~~
 
+[Voltar ao Índice](#índice)
+
 ---
 
 ## Prompt de Continuidade para a Aula 6
 
 "Sou aluno do curso Jakarta EE 11 com Java 21, Gradle, JUnit 5 e VS Code. Concluí a Aula 5 (Introdução aos Servlets: o coração do Jakarta EE Web). O HelloServlet está criado em src/main/java/com/taskflow/controller/HelloServlet.java, mapeado em /hello com @WebServlet, e responde corretamente em http://localhost:8080/taskflow/hello. O SobreServlet foi criado no exercício. O ciclo de vida do Servlet foi observado via logs do GlassFish. Tenho o plano_mestre.txt, o log_estado_projeto.md e os prompts_individuais.md em anexo para contexto. Por favor, gere a **Aula 6: Requisições e Respostas HTTP com Servlets e TDD com JUnit 5**, seguindo rigorosamente a estrutura definida no plano mestre: teoria detalhada com mínimo de 2.000 palavras, analogia de ancoragem, diagrama Mermaid com blocos ~~~mermaid, código comentado linha a linha com blocos ~~~, glossário técnico, antecipação de erros, exercício com resolução comentada, resumo dos pontos-chave, log de estado do projeto atualizado e prompt de continuidade para a Aula 7. O documento inteiro deve estar dentro de um bloco ```markdown. Nenhum bloco interno deve usar triple backtick."
+
+[Voltar ao Índice](#índice)
 
 ---
 
